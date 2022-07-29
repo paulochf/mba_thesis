@@ -17,6 +17,13 @@ numpy = "*"
 scipy = "*"
 seaborn = "*"
 jupyterlab = "*"
+lux = "*"
+nbqa = "*"
+scikit-learn = "*"
+yellowbrick = "*"
+ggplot = "*"
+altair = "*"
+pandas-bokeh = "*"
 
 [requires]
 python_version = "3"
