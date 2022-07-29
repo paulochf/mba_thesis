@@ -24,6 +24,7 @@ yellowbrick = "*"
 ggplot = "*"
 altair = "*"
 pandas-bokeh = "*"
+nbdime = "*"
 
 [requires]
 python_version = "3"
