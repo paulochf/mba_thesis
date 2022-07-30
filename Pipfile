@@ -33,6 +33,11 @@ isort = "*"
 autoflake = "*"
 pylint = "*"
 httpx = "*"
+prefect-dask = "*"
+pydantic = "*"
+hypothesis = "*"
+devtools = "*"
+python-dotenv = "*"
 
 [requires]
 python_version = "3"
