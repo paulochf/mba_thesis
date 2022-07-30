@@ -32,6 +32,7 @@ black = "*"
 isort = "*"
 autoflake = "*"
 pylint = "*"
+httpx = "*"
 
 [requires]
 python_version = "3"
