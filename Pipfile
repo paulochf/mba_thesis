@@ -25,6 +25,13 @@ ggplot = "*"
 altair = "*"
 pandas-bokeh = "*"
 nbdime = "*"
+prefect = "*"
+pytest = "*"
+typer = "*"
+black = "*"
+isort = "*"
+autoflake = "*"
+pylint = "*"
 
 [requires]
 python_version = "3"
