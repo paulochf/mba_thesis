@@ -38,6 +38,7 @@ pydantic = "*"
 hypothesis = "*"
 devtools = "*"
 python-dotenv = "*"
+pre-commit = "*"
 
 [requires]
 python_version = "3"
