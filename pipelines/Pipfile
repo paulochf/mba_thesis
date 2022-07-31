@@ -18,6 +18,9 @@ seaborn = "*"
 prefect = "*"
 typer = "*"
 pytest = "*"
+python-dotenv = {extras = ["cli"], version = "*"}
+devtools = "*"
+prefect-dask = "*"
 
 [requires]
 python_version = "3"

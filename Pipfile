@@ -37,7 +37,7 @@ prefect-dask = "*"
 pydantic = "*"
 hypothesis = "*"
 devtools = "*"
-python-dotenv = "*"
+python-dotenv = {extras = ["cli"], version = "*"}
 pre-commit = "*"
 
 [requires]
