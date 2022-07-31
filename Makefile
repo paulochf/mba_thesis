@@ -1,4 +1,7 @@
 .PHONY: clean data lint requirements help
+.ONESHELL: clean data lint requirements help
+
+include .env
 
 
 ## Delete all compiled Python files
@@ -8,7 +11,7 @@ clean:
 
 
 data:
-	wget https://www.cs.ucr.edu/\~eamonn/time_series_data_2018/UCR_TimeSeriesAnomalyDatasets2021.zip -P data/0_external/
+	wget https://www.cs.ucr.edu/\~eamonn/time_series_data_2018/UCR_TimeSeriesAnomalyDatasets2021.zip -P $${PATH_DATA_EXTERNAL}
 
 
 ## Lint
