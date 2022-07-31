@@ -1,15 +1,28 @@
-.PHONY: help requirements
+.PHONY: clean data lint requirements help
+
+
+## Delete all compiled Python files
+clean:
+	find . -type f -name "*.py[co]" -delete
+	find . -type d -name "__pycache__" -delete
+
+
+data:
+	wget https://www.cs.ucr.edu/\~eamonn/time_series_data_2018/UCR_TimeSeriesAnomalyDatasets2021.zip -P data/0_external/
+
+
+## Lint
+lint:
+	pre-commit run --all-files
+
 
 ## Set up Python development environment
 requirements:
 	python3 -m venv ./venv
+	source ./venv/bin/activate
 	pip install -U pipenv
 	pipenv shell
 	pipenv sync
-
-
-lint:
-	pre-commit run --all-files
 
 
 #################################################################################
