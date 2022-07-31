@@ -1,7 +1,7 @@
 #!/usr/bin/env -S make -f
 
-.PHONY: clean data lint requirements help
-.ONESHELL: clean data lint requirements help
+.PHONY: clean data lint references requirements help
+.ONESHELL: clean data lint references requirements help
 
 include .env
 
@@ -12,11 +12,21 @@ clean:
 	find . -type d -name "__pycache__" -delete
 
 
+# Download dataset from source
 data:
-	wget https://www.cs.ucr.edu/\~eamonn/time_series_data_2018/UCR_TimeSeriesAnomalyDatasets2021.zip -P $$PATH_DATA_EXTERNAL;
+	wget $$URL_DATASET -P $$PATH_DATA_EXTERNAL;
 	unzip -j "$$PATH_DATA_EXTERNAL/UCR_TimeSeriesAnomalyDatasets2021.zip" \
 		"AnomalyDatasets_2021/UCR_TimeSeriesAnomalyDatasets2021/FilesAreInHere/UCR_Anomaly_FullData/*txt" \
 		-d "$$PATH_DATA_RAW/UCR_Anomaly_FullData";
+
+
+## Lint
+lint:
+	pre-commit run --all-files
+
+
+# Extract docs from source
+references: data
 	zipinfo -1 "$$PATH_DATA_EXTERNAL/UCR_TimeSeriesAnomalyDatasets2021.zip" -x "*txt" | \
 		egrep -v "(\~|zip)" | \
 		while read filename; do \
@@ -26,11 +36,6 @@ data:
 	cd "$$PATH_DOCS_REFERENCES/UCR"; \
 		mv ./AnomalyDatasets_2021/UCR_TimeSeriesAnomalyDatasets2021/* .; \
 		rm -rf ./AnomalyDatasets_2021;
-
-
-## Lint
-lint:
-	pre-commit run --all-files
 
 
 ## Set up Python development environment
