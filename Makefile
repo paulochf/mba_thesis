@@ -1,3 +1,5 @@
+#!/usr/bin/env -S make -f
+
 .PHONY: clean data lint requirements help
 .ONESHELL: clean data lint requirements help
 
@@ -11,7 +13,10 @@ clean:
 
 
 data:
-	wget https://www.cs.ucr.edu/\~eamonn/time_series_data_2018/UCR_TimeSeriesAnomalyDatasets2021.zip -P $${PATH_DATA_EXTERNAL}
+#	wget https://www.cs.ucr.edu/\~eamonn/time_series_data_2018/UCR_TimeSeriesAnomalyDatasets2021.zip -P $$PATH_DATA_EXTERNAL;
+#	unzip -j "$$PATH_DATA_EXTERNAL/UCR_TimeSeriesAnomalyDatasets2021.zip" \
+#		"AnomalyDatasets_2021/UCR_TimeSeriesAnomalyDatasets2021/FilesAreInHere/UCR_Anomaly_FullData/*txt" \
+#		-d "$$PATH_DATA_RAW/UCR_Anomaly_FullData";
 
 
 ## Lint
