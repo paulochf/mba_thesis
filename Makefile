@@ -13,10 +13,15 @@ clean:
 
 
 data:
-#	wget https://www.cs.ucr.edu/\~eamonn/time_series_data_2018/UCR_TimeSeriesAnomalyDatasets2021.zip -P $$PATH_DATA_EXTERNAL;
-#	unzip -j "$$PATH_DATA_EXTERNAL/UCR_TimeSeriesAnomalyDatasets2021.zip" \
-#		"AnomalyDatasets_2021/UCR_TimeSeriesAnomalyDatasets2021/FilesAreInHere/UCR_Anomaly_FullData/*txt" \
-#		-d "$$PATH_DATA_RAW/UCR_Anomaly_FullData";
+	wget https://www.cs.ucr.edu/\~eamonn/time_series_data_2018/UCR_TimeSeriesAnomalyDatasets2021.zip -P $$PATH_DATA_EXTERNAL;
+	unzip -j "$$PATH_DATA_EXTERNAL/UCR_TimeSeriesAnomalyDatasets2021.zip" \
+		"AnomalyDatasets_2021/UCR_TimeSeriesAnomalyDatasets2021/FilesAreInHere/UCR_Anomaly_FullData/*txt" \
+		-d "$$PATH_DATA_RAW/UCR_Anomaly_FullData";
+	zipinfo -1 data/0_external/UCR_TimeSeriesAnomalyDatasets2021.zip -x "*txt" | \
+		egrep -v "(\~|zip|Full)" | \
+		while read filename; do \
+			unzip data/0_external/UCR_TimeSeriesAnomalyDatasets2021.zip -d docs/references/UCR_teste "$$filename"; \
+		done
 
 
 ## Lint
