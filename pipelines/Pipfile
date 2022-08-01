@@ -21,6 +21,8 @@ pytest = "*"
 python-dotenv = {extras = ["cli"], version = "*"}
 devtools = "*"
 prefect-dask = "*"
+ipython = "*"
+ipdb = "*"
 
 [requires]
 python_version = "3"
