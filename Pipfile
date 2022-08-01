@@ -39,6 +39,7 @@ hypothesis = "*"
 devtools = "*"
 python-dotenv = {extras = ["cli"], version = "*"}
 pre-commit = "*"
+pyarrow = "*"
 
 [requires]
 python_version = "3"

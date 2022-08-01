@@ -84,7 +84,7 @@ joblib==1.1.0
 json5==0.9.8
 jsonpatch==1.32
 jsonpointer==2.3
-jsonschema==4.8.0
+jsonschema==4.9.0
 jupyter-client==7.3.4
 jupyter-core==4.11.1
 jupyter-server==1.18.1
@@ -147,6 +147,7 @@ psutil==5.9.1
 ptyprocess==0.7.0
 pure-eval==0.2.2
 py==1.11.0
+pyarrow==8.0.0
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pycodestyle==2.9.0

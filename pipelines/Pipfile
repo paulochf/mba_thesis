@@ -23,6 +23,7 @@ devtools = "*"
 prefect-dask = "*"
 ipython = "*"
 ipdb = "*"
+pyarrow = "*"
 
 [requires]
 python_version = "3"
