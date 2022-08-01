@@ -1,19 +1,17 @@
-import httpx
+from pathlib import Path
+from typing import List
+
 from prefect import flow, task
+from prefect_dask import DaskTaskRunner
 
 
 @task(retries=3)
-def get_stars(repo):
-    url = f"https://api.github.com/repos/{repo}"
-    count = httpx.get(url).json()["stargazers_count"]
-    print(f"{repo} has {count} stars!")
+def prepare_file(path):
+    pass
 
 
-@flow
-def github_stars(repos):
-    for repo in repos:
-        get_stars(repo)
-
-
-# call the flow!
-github_stars(["PrefectHQ/Prefect", "PrefectHQ/prefect-aws",  "PrefectHQ/prefect-dbt"])
+@flow(task_runner=DaskTaskRunner())
+def prepare_files(paths: List[Path]):
+    # for path in paths:
+    #     prepare_file.submit(path)
+    pass
