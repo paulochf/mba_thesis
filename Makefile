@@ -6,7 +6,12 @@
 include .env
 
 
-## Delete all compiled Python files
+# Set env var value to the correct full path
+build:
+	PWD=`pwd`; cat .env.example | sed -E -e "s#__PWD__#${PWD}#" > .env;
+
+
+# Delete all compiled Python files
 clean:
 	find . -type f -name "*.py[co]" -delete
 	find . -type d -name "__pycache__" -delete
@@ -20,7 +25,7 @@ data:
 		-d "$$PATH_DATA_RAW/UCR_Anomaly_FullData";
 
 
-## Lint
+# Lint
 lint:
 	pre-commit run --all-files
 
@@ -38,8 +43,8 @@ references: data
 		rm -rf ./AnomalyDatasets_2021;
 
 
-## Set up Python development environment
-requirements:
+# Set up Python development environment
+requirements: build
 	python3 -m venv ./venv
 	source ./venv/bin/activate
 	pip install -U pipenv
