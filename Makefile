@@ -45,6 +45,7 @@ requirements:
 	pip install -U pipenv
 	pipenv shell
 	pipenv sync
+	pre-commit install -f
 
 
 #################################################################################
