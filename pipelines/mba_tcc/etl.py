@@ -3,6 +3,7 @@ from typing import List
 
 from prefect import flow, task
 from prefect_dask import DaskTaskRunner
+from utils.config import get_env_var_as_path
 
 
 @task(retries=3)
