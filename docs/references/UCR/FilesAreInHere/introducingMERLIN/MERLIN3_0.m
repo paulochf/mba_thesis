@@ -20,8 +20,8 @@ for lengthIndex = 1:numLengths
     tic;
     while true
         disp('---');
-        [temp_disc_loc_a, temp_disc_dist_a,  temp_disc_nn_loc_a] = discord_discovery_gemm3(a, lengths(lengthIndex), r, display_meta_info);            
-        
+        [temp_disc_loc_a, temp_disc_dist_a,  temp_disc_nn_loc_a] = discord_discovery_gemm3(a, lengths(lengthIndex), r, display_meta_info);
+
         if ~isempty(temp_disc_dist_a)
             break;
         else
@@ -35,7 +35,7 @@ for lengthIndex = 1:numLengths
             disc_misses(lengthIndex) = disc_misses(lengthIndex) + 1;
         end
     end
-    
+
     if length(temp_disc_loc_a) > 1
         [temp_disc_dist_a, top_disc_pos] = max(temp_disc_dist_a);
         temp_disc_loc_a = temp_disc_loc_a(top_disc_pos);

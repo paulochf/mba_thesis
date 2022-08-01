@@ -208,18 +208,18 @@ cand_count = 0;
 for i = 1 : mxblocklen : subseqcount
     blocklen = min(mxblocklen, subseqcount - i + 1);
     no_rej = true(blocklen, 1);
-    
+
     if cand_count ~= 0
-        
+
         % First test which candidates are ejected by one or more
         % comparisons to this sequence block.
         % Also mark all sequences in this block that are too close to an
         % existing candidate as non-potential candidates
         valid_cands = true(cand_count, 1);
-        
+
         if cands_idx(1) <= i + blocklen - min_sep - 1
             last_cmp = find(cands_idx(1:cand_count) <= i + blocklen - min_sep - 1, 1, 'last');
-            
+
             if cands_idx(1) > i - min_sep
                 last_no_confl = 0;
             else
@@ -228,7 +228,7 @@ for i = 1 : mxblocklen : subseqcount
                 valid_cands(any(cr > r, 2)) = false;
                 no_rej(any(cr > r, 1)) = false;
             end
-            
+
             for pos = last_no_confl + 1 : last_cmp
                 first_cmp_seq = max(i, cands_idx(pos) + min_sep);
                 cr = cands(:, pos)' * ss(:, first_cmp_seq : i + blocklen - 1);
@@ -242,7 +242,7 @@ for i = 1 : mxblocklen : subseqcount
                     no_rej(invalid) = false;
                 end
             end
-            
+
             surviving_count = sum(valid_cands);
             if surviving_count < cand_count
                 % matlab implementation detail:
@@ -257,7 +257,7 @@ for i = 1 : mxblocklen : subseqcount
             end
         end
     end
-    
+
     % If our blocklen permits within block comparisons, we perform them
     % before moving any sequences intto the candidate list
     if blocklen >= min_sep
@@ -270,7 +270,7 @@ for i = 1 : mxblocklen : subseqcount
             end
         end
     end
-    
+
     % Append surviving sequences to the end of the candidate matrix
     % This way we maintain temporal ordering and can separate out batchable
     % parts
@@ -281,7 +281,7 @@ for i = 1 : mxblocklen : subseqcount
         cands(:, prev_count + 1 : prev_count + length(can_add)) = ss(:, can_add );
         cands_idx(prev_count + 1 : prev_count + length(can_add)) = can_add;
     end
-    
+
 end
 
 if display_meta_info
@@ -305,25 +305,25 @@ for i = 1 : mxblocklen : subseqcount
     % within block comparisons and comparisons between candidates and
     % blocks that appear after the candidate position.
     % Here we check prior to the candidate position.
-    
+
     if cand_count == 0
         break;
     end
-    
+
     valid_cands = true(cand_count, 1);
-    
+
     blocklen = min(mxblocklen, subseqcount - i + 1);
-    
+
     % Within block comparisons made at phase 1, this is just to capture
     % min_sep exceeding blocklen
     min_cand_idx = max(i + blocklen, i + min_sep);
-    
+
     if cands_idx(cand_count) < min_cand_idx
         % Any comparisons that could result in rejecting additional candidates
         % were already made in Phase 1.
         break;
     end
-    
+
     first_cmp_pos = find(cands_idx(1 : cand_count) >= min_cand_idx, 1);
     no_conflict_begin = i + blocklen + min_sep - 1;
     if cands_idx(cand_count) < no_conflict_begin
@@ -331,7 +331,7 @@ for i = 1 : mxblocklen : subseqcount
     else
         no_confl_cmp_pos = find(cands_idx(first_cmp_pos : cand_count) >= no_conflict_begin, 1) + first_cmp_pos - 1;
     end
-    
+
     % This covers:
     %     i + min_sep <= cands_idx(pos) < i + blocklen + min_sep - 1
     for pos = first_cmp_pos : no_confl_cmp_pos - 1
@@ -339,14 +339,14 @@ for i = 1 : mxblocklen : subseqcount
             valid_cands(pos) = false;
         end
     end
-    
+
     % This covers:
     %     i + blocklen + min_sep - 1 <= cands_idx(...)
     if no_confl_cmp_pos < cand_count
         cr = cands(:, no_confl_cmp_pos : cand_count)' * ss(:, i : i + blocklen - 1);
         valid_cands(find(any(cr > r, 2)) + no_confl_cmp_pos - 1) = false;
     end
-    
+
     surviving_count = sum(valid_cands);
     if surviving_count < cand_count
         % Matlab implementation note:
@@ -401,7 +401,7 @@ if cand_count > 0
         else
             last_confl = find((cands_idx > i - min_sep) & (cands_idx <= i + blocklen - 1 + min_sep), 1, 'last');
         end
-        
+
         if first_confl > 1
             [mxcr, mxcor_pos] = max(cands(:, 1 : first_confl - 1)' * ss(:, i : i + blocklen - 1), [], 2);
             update = find(mxcr > cands_nn_dist(1 : first_confl - 1));
@@ -445,7 +445,7 @@ if cand_count > 0
                     % with the beginning or end of the block, yielding 2
                     % valid comparison ranges for this candidate in this
                     % block.
-                    
+
                     [mxcr_lo, mxcr_idx_lo] = max(cands(:, pos)' * ss(:, i : cands_idx(pos) - min_sep), [], 2);
                     [mxcr_hi, mxcr_idx_hi] = max(cands(:, pos)' * ss(:, cands_idx(pos) + min_sep : i + blocklen - 1), [], 2);
                     if mxcr_lo > mxcr_hi
@@ -461,7 +461,7 @@ if cand_count > 0
                     end
                 end
             end
-            
+
             if last_confl < cand_count
                 [mxcr, mxcor_pos] = max(cands(:, last_confl + 1 : end)' * ss(:, i : i + blocklen - 1), [], 2);
                 update = find(mxcr > cands_nn_dist(last_confl + 1 : end));
@@ -485,4 +485,3 @@ if display_meta_info
 end
 
 end
-

@@ -46,7 +46,7 @@ for ki = 1:K
         % [distances(1,ki), indices(1,ki)] = DRAG_topK(T, lengths(1), r*kMultiplier, exclusionIndices);
 %         disp(discord_discovery_gemm(T, lengths(1), r*kMultiplier, exclusionIndices, display_meta_info));
         [tempIndex,tempDist, tempNNIndex] = discord_discovery_gemm(T, lengths(i), r*kMultiplier, exclusionIndices, display_meta_info);
-        
+
         resultString = "";
         if ~isempty(tempIndex) && ~isempty(tempDist)
             [distances(i,ki), maxIndex] = max(tempDist);
@@ -55,10 +55,10 @@ for ki = 1:K
             resultString = sprintf('The top discord of length %d is at %d, with a discord distance of %.2f. Its nearest neighbor is at %d\n', lengths(i), indices(i,ki), distances(i,ki), nnIndices(i,ki));
         end
         if display_meta_info
-                resultString = resultString + "\n"; 
+                resultString = resultString + "\n";
         end
         fprintf(resultString);
-            
+
         if ki == 1
             r = r * 0.5;
         else
@@ -85,7 +85,7 @@ for i = 2:5
         while distances(i, ki) < 0
             %[distances(i, ki), indices(i, ki)] = DRAG_topK(T, lengths(i), r*kMultiplier, exclusionIndices);
             [tempIndex,tempDist, tempNNIndex] = discord_discovery_gemm(T, lengths(i), r*kMultiplier, exclusionIndices, display_meta_info);
-            
+
             resultString = "";
             if ~isempty(tempIndex) && ~isempty(tempDist)
                 [distances(i,ki), maxIndex] = max(tempDist);
@@ -94,10 +94,10 @@ for i = 2:5
                 resultString = sprintf('The top discord of length %d is at %d, with a discord distance of %.2f. Its nearest neighbor is at %d\n', lengths(i), indices(i,ki), distances(i,ki), nnIndices(i,ki));
             end
             if display_meta_info
-                resultString = resultString + "\n"; 
+                resultString = resultString + "\n";
             end
             fprintf(resultString);
-            
+
             if ki == 1
                 r = r * 0.99;
             else
@@ -125,19 +125,19 @@ for i = 6:numLengths
         while distances(i, ki) < 0
             %[distances(i, ki), indices(i, ki)] = DRAG_topK(T, lengths(i), r*kMultiplier, exclusionIndices);
             [tempIndex,tempDist, tempNNIndex] = discord_discovery_gemm(T, lengths(i), r*kMultiplier, exclusionIndices, display_meta_info);
-            
+
             resultString = "";
             if ~isempty(tempIndex) && ~isempty(tempDist)
                 [distances(i,ki), maxIndex] = max(tempDist);
                 indices(i,ki) = tempIndex(maxIndex);
                 nnIndices(i,ki) = tempNNIndex(maxIndex);
-                resultString = sprintf('The top discord of length %d is at %d, with a discord distance of %.2f. Its nearest neighbor is at %d\n', lengths(i), indices(i,ki), distances(i,ki), nnIndices(i,ki));       
+                resultString = sprintf('The top discord of length %d is at %d, with a discord distance of %.2f. Its nearest neighbor is at %d\n', lengths(i), indices(i,ki), distances(i,ki), nnIndices(i,ki));
             end
             if display_meta_info
-                resultString = resultString + "\n"; 
+                resultString = resultString + "\n";
             end
             fprintf(resultString);
-            
+
             r = r * 0.99;
             if ki == 1
                 r = r * 0.99;
@@ -227,12 +227,12 @@ function [T2] = recommendTransformation(T, w)
     TSTD = nanstd(T);
     T2 = (T - TMean)/TSTD;
     Tmovstd = movstd(T2, w);
-    
+
     figure;
     f = gcf;
     tiledlayout(1,1);
     ax = nexttile();
-    
+
     numBins = 100;
     edges = linspace(0,max(Tmovstd), numBins);
     h = histogram(ax, Tmovstd, edges);
@@ -240,14 +240,14 @@ function [T2] = recommendTransformation(T, w)
     title({"Histogram of subsequence std","Bins near 0 cause problems!"});
     xlabel("movstd");
     ylabel("number of subsequence");
-    
+
     userMessage = "";
     pad = "!!!   ";
     userMessage = "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n";
     userMessage = userMessage + pad + "MERLIN may report false positive anomalies in subsequences with near constant values.\n";
     userMessage = userMessage + pad + "A sign that the problem exist is a spike near zero when plotting the histogram of movstd.\n";
     userMessage = userMessage + pad + "Adding a large linear trend will solve this issue.\n";
-    
+
     userQuestion = pad + "Proceed with data modification? [y/n]\n";
     answer = "na";
     if true || sum(h.BinCounts(1:5)) > 0
@@ -256,9 +256,9 @@ function [T2] = recommendTransformation(T, w)
             answer = input(userQuestion, 's');
         end
     end
-    
+
     close(f);
-    
+
     if strcmp(answer,"y")
        T2 = preprocessTimeSeries(T, w);
     end
