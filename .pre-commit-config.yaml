@@ -5,25 +5,34 @@ repos:
         rev: v4.3.0
         hooks:
         -   id: trailing-whitespace
+            verbose: true
             exclude: ^notebooks
         -   id: end-of-file-fixer
+            verbose: true
             exclude: ^notebooks
         -   id: check-yaml
+            verbose: true
             exclude: ^notebooks
         -   id: check-case-conflict
+            verbose: true
             exclude: ^notebooks
         -   id: debug-statements
+            verbose: true
             exclude: ^notebooks
         -   id: detect-private-key
+            verbose: true
             exclude: ^notebooks
         -   id: check-merge-conflict
+            verbose: true
             exclude: ^notebooks
         -   id: check-added-large-files
+            verbose: true
             exclude: ^notebooks
     -   repo: https://github.com/myint/autoflake
         rev: v1.4
         hooks:
         -   id: autoflake
+            verbose: true
             exclude: ^notebooks
             args:
               - --in-place
@@ -35,6 +44,7 @@ repos:
         rev: 5.10.1
         hooks:
         -   id: isort
+            verbose: true
             exclude: ^notebooks
             args:
               - --profile
@@ -43,4 +53,5 @@ repos:
         rev: 22.6.0
         hooks:
         -   id: black
+            verbose: true
             exclude: ^notebooks
