@@ -16,7 +16,8 @@ def test_make_files_index():
 
     with TemporaryDirectory(dir=final_path, suffix="_test") as tmp_dir:
         path_tmp_dir = Path(tmp_dir)
-        make_files_index.fn(dataset_files, path_tmp_dir)
+        result = make_files_index.fn(dataset_files, path_tmp_dir)
+        assert result is True
 
         index_file_path = path_tmp_dir / "files_index.parquet"
         assert index_file_path.exists()
