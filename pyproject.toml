@@ -23,7 +23,7 @@ known_third_party = ["dotenv", "fastapi", "mba_tcc", "pandas", "prefect", "prefe
 
 
 [tool.flake8]
-ignore = ['E231', 'E241']
+ignore = ['E231', 'E241', 'E701']
 count = true
 statistics = true
 max-line-length = 160
