@@ -24,6 +24,7 @@ prefect-dask = "*"
 ipython = "*"
 ipdb = "*"
 pyarrow = "*"
+commitizen = "*"
 
 [requires]
 python_version = "3"
