@@ -22,7 +22,7 @@ repos:
               - black
 
     -   repo: https://github.com/asottile/seed-isort-config
-        rev: v1.9.3
+        rev: v2.2.0
         hooks:
         -   id: seed-isort-config
 
@@ -32,14 +32,18 @@ repos:
         -   id: black
             language_version: python3.10
 
-    -   repo: https://github.com/john-hen/Flake8-pyproject
-        rev: 1.0.0
+    -   repo: https://github.com/myint/autoflake
+        rev: v1.4
         hooks:
-        -   id: Flake8-pyproject
+        -   id: autoflake
             args:
-              - --check
               - --in-place
               - --remove-duplicate-keys
               - --remove-unused-variables
               - --remove-all-unused-imports
               - --expand-star-imports
+
+    -   repo: https://github.com/john-hen/Flake8-pyproject
+        rev: 1.0.0
+        hooks:
+        -   id: Flake8-pyproject
