@@ -5,26 +5,37 @@ repos:
         rev: v4.3.0
         hooks:
         -   id: trailing-whitespace
-            exclude: ^notebooks
         -   id: end-of-file-fixer
-            exclude: ^notebooks
         -   id: check-yaml
-            exclude: ^notebooks
         -   id: check-case-conflict
-            exclude: ^notebooks
         -   id: debug-statements
-            exclude: ^notebooks
         -   id: detect-private-key
-            exclude: ^notebooks
         -   id: check-merge-conflict
-            exclude: ^notebooks
         -   id: check-added-large-files
-            exclude: ^notebooks
-    -   repo: https://github.com/myint/autoflake
-        rev: v1.4
+
+    -   repo: https://github.com/PyCQA/isort
+        rev: 5.10.1
         hooks:
-        -   id: autoflake
-            exclude: ^notebooks
+        -   id: isort
+            args:
+              - --profile
+              - black
+
+    -   repo: https://github.com/asottile/seed-isort-config
+        rev: v1.9.3
+        hooks:
+        -   id: seed-isort-config
+
+    -   repo: https://github.com/ambv/black
+        rev: 22.6.0
+        hooks:
+        -   id: black
+            language_version: python3.10
+
+    -   repo: https://github.com/john-hen/Flake8-pyproject
+        rev: 1.0.0
+        hooks:
+        -   id: Flake8-pyproject
             args:
               - --check
               - --in-place
@@ -32,16 +43,3 @@ repos:
               - --remove-unused-variables
               - --remove-all-unused-imports
               - --expand-star-imports
-    -   repo: https://github.com/PyCQA/isort
-        rev: 5.10.1
-        hooks:
-        -   id: isort
-            exclude: ^notebooks
-            args:
-              - --profile
-              - black
-    -   repo: https://github.com/ambv/black
-        rev: 22.6.0
-        hooks:
-        -   id: black
-            exclude: ^notebooks
