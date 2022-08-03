@@ -40,11 +40,13 @@ devtools = "*"
 python-dotenv = {extras = ["cli"], version = "*"}
 pre-commit = "*"
 pyarrow = "*"
+ipdb = "*"
 
 [requires]
 python_version = "3"
 
 [scripts]
 beautify = "bash -c \"autoflake -i -r --expand-star-imports --remove-all-unused-imports --remove-duplicate-keys --remove-unused-variables **/*.py; isort **/*.py; black **/*.py\""
+commit = "cz c"
 lintpy = "bash -c \"pylint **/*.py\""
 lint = "pre-commit run --all-files"
