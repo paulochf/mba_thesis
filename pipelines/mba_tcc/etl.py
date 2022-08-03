@@ -50,7 +50,7 @@ def make_files_index(data_paths: List[Path], output_dir: Path) -> bool:
 
 
 @task()
-def fix_file(file_number: int, file_path: Path, file_name: str, output_path: Path, *args, **kwargs):
+def fix_file(file_number: int, file_path: Path, file_name: str, output_path: Path, *args, **kwargs) -> bool:
     import pandas as pd
 
     files_fix = {204, 205, 206, 207, 208, 225, 226, 242, 243}
@@ -63,6 +63,8 @@ def fix_file(file_number: int, file_path: Path, file_name: str, output_path: Pat
 
     df = df.rename(columns={0: "vals"})
     df.to_parquet((output_path / file_name).with_suffix(".parquet"))
+
+    return True
 
 
 @flow(task_runner=DaskTaskRunner())
