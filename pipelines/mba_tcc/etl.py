@@ -43,8 +43,8 @@ def make_files_index(data_paths: List[Path], output_dir: Path) -> bool:
     )
 
     files_df = files_df.astype({c: "int64" for c in numeric_columns})  # Convert the numeric columns from to numeric.
-    files_df = files_df.set_index("file_number").sort_index()  # File number column as dataframe sorted index.
-    files_df.to_parquet(output_dir / "files_index.parquet")  # Save dataframe as parquet in the final data folder.
+    files_df = files_df.sort_values("file_number")  # File number column as dataframe sorted index.
+    files_df.to_parquet(output_dir / "files_index.parquet", index=False)  # Save dataframe as parquet in the final data folder.
 
     return True
 
