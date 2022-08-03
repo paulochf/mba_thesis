@@ -8,7 +8,6 @@ black = "==21.7b0"
 isort = "*"
 autoflake = "*"
 pylint = "*"
-pre-commit = "*"
 
 [packages]
 wandb = "*"
@@ -38,7 +37,6 @@ pydantic = "*"
 hypothesis = "*"
 devtools = "*"
 python-dotenv = {extras = ["cli"], version = "*"}
-pre-commit = "*"
 pyarrow = "*"
 ipdb = "*"
 
