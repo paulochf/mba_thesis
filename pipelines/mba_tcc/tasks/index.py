@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pandas as pd
 from prefect import task
 
@@ -9,7 +11,7 @@ from utils.config import get_env_var_as_path
     tags=["index", "final"],
     version="1",
 )
-def make_files_index() -> bool:
+def make_files_index(output_path: Path) -> bool:
     dataset_path = get_env_var_as_path("PATH_DATA_RAW_UCR")
     dataset_files = dataset_path.glob("./*.txt")
 
@@ -40,9 +42,8 @@ def make_files_index() -> bool:
         r"\.txt"  # file extension
     )
 
-    final_path = get_env_var_as_path("PATH_DATA_FINAL")
     files_df = files_df.astype({c: "int64" for c in numeric_columns})  # Convert the numeric columns from to numeric.
     files_df = files_df.sort_values("file_number")  # File number column as dataframe sorted index.
-    files_df.to_parquet(final_path / "files_index.parquet", index=False)  # Save dataframe as parquet in the final data folder.
+    files_df.to_parquet(output_path / "files_index.parquet", index=False)  # Save dataframe as parquet in the final data folder.
 
     return True

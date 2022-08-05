@@ -1,10 +1,13 @@
 from prefect import flow
 
-from mba_tcc.etl.fix_file import fix_files
-from mba_tcc.file_index import make_files_index
+from utils.config import get_env_var_as_path
+from pipelines.mba_tcc.tasks.fix import fix_files
+from pipelines.mba_tcc.tasks.index import make_files_index
 
 
 @flow()
 def prepare_files():
-    make_files_index()
+    final_path = get_env_var_as_path("PATH_DATA_FINAL")
+
+    make_files_index(final_path)
     fix_files()

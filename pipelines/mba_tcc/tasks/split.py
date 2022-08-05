@@ -16,7 +16,7 @@ def split_file(file_path: Path, output_train_folder: Path, output_anomaly_path: 
 
 
 @flow(task_runner=DaskTaskRunner())
-def split_files() -> bool:
+def split_files():
     interim_path = get_env_var_as_path("PATH_DATA_INTERIM_RAW2PARQUET")
     final_train_path = get_env_var_as_path("PATH_DATA_FINAL_TRAIN")
     final_anomaly_path = get_env_var_as_path("PATH_DATA_FINAL_ANOMALY")
