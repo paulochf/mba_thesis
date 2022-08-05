@@ -7,7 +7,7 @@ from pandas.testing import assert_series_equal
 from utils.config import get_env_var_as_path
 from utils.testing import assert_file
 
-from pipelines.mba_tcc.tasks.fix import fix_file
+from tasks import fix_file
 
 LOGGER = logging.getLogger(__name__)
 

@@ -1,11 +1,10 @@
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-import ipdb
 import pandas as pd
 from utils.config import get_env_var_as_path
 
-from pipelines.mba_tcc.tasks.index import make_files_index
+from tasks.etl.index import make_files_index
 
 
 def test_make_files_index():
