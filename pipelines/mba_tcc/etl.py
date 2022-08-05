@@ -1,7 +1,7 @@
 from prefect import flow
 from utils.config import get_env_var_as_path
 
-from tasks import fix_files
+from tasks.etl.fix import fix_files
 from tasks.etl.index import make_files_index
 
 
