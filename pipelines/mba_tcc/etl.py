@@ -49,7 +49,11 @@ def make_files_index(data_paths: List[Path], output_dir: Path) -> bool:
     return True
 
 
-@task()
+@task(
+    description="Standardize the schema and fix the values in the files that have data them all in the first line.",
+    tags=["files", "interim"],
+    version="1",
+)
 def fix_file(file_number: int, file_path: Path, file_name: str, output_path: Path, *args, **kwargs) -> bool:
     import pandas as pd
 
