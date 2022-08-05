@@ -25,11 +25,6 @@ data:
 		-d "$$PATH_DATA_RAW/UCR_Anomaly_FullData";
 
 
-# Lint
-lint:
-	pre-commit run --all-files
-
-
 # Extract docs from source
 references: data
 	zipinfo -1 "$$PATH_DATA_EXTERNAL/UCR_TimeSeriesAnomalyDatasets2021.zip" -x "*txt" | \
@@ -51,6 +46,11 @@ requirements: build
 	pipenv shell
 	pipenv sync
 	pre-commit install -f
+
+
+update-repos:
+	git push origin main
+	git push github main
 
 
 #################################################################################
