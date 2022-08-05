@@ -31,6 +31,7 @@ python_version = "3"
 
 [scripts]
 commit = "cz c"
+lab='jupyter lab --notebook-dir ..'
 pipelines = "python pipelines.py"
 test = "python -m pytest tests"
 test_debug = "python -m pytest tests -s --pdb --pdbcls=IPython.terminal.debugger:Pdb"

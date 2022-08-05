@@ -53,4 +53,5 @@ autoflake -i -r --expand-star-imports --remove-all-unused-imports --remove-dupli
 #pflake8 **/*.py\"
 """
 commit = "cz c"
+lab='jupyter lab'
 lintpy = "bash -c \"pylint **/*.py\""
