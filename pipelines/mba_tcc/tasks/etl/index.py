@@ -25,7 +25,7 @@ def make_files_index(output_path: Path) -> bool:
     #   - 012          : dataset number
     #   - _UCR_Anomaly_: fixed string
     #   - tiltAPB1     : mnemonic name
-    #   - 100000       : training data index range between [1, X]
+    #   - 100000       : training data index range between [1, X] indexes (1-based)
     #   - 114283_114350: anomaly data index range between [114283; 114350]
     name_parts_columns = ["file_number", "mnemonic", "training_index_end", "anomaly_index_start", "anomaly_index_end"]
     numeric_columns = [x for x in name_parts_columns if x != "mnemonic"]
