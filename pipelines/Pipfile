@@ -30,10 +30,7 @@ commitizen = "*"
 python_version = "3"
 
 [scripts]
-beautify = "bash -c \"autoflake -i -r --expand-star-imports --remove-all-unused-imports --remove-duplicate-keys --remove-unused-variables **/*.py; isort **/*.py; black **/*.py\""
 commit = "cz c"
-lintpy = "bash -c \"pylint **/*.py\""
-lint = "pre-commit run --all-files"
 pipelines = "python pipelines.py"
 test = "python -m pytest tests"
 test_debug = "python -m pytest tests -s --pdb --pdbcls=IPython.terminal.debugger:Pdb"

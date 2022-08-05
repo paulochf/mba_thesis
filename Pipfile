@@ -39,12 +39,18 @@ devtools = "*"
 python-dotenv = {extras = ["cli"], version = "*"}
 pyarrow = "*"
 ipdb = "*"
+pyproject-flake8 = "*"
 
 [requires]
 python_version = "3"
 
 [scripts]
-beautify = "bash -c \"autoflake -i -r --expand-star-imports --remove-all-unused-imports --remove-duplicate-keys --remove-unused-variables **/*.py; isort **/*.py; black **/*.py\""
+beautify = """
+bash -c \"
+isort **/*.py;
+black **/*.py;
+autoflake -i -r --expand-star-imports --remove-all-unused-imports --remove-duplicate-keys --remove-unused-variables **/*.py;
+#pflake8 **/*.py\"
+"""
 commit = "cz c"
 lintpy = "bash -c \"pylint **/*.py\""
-lint = "pre-commit run --all-files"
