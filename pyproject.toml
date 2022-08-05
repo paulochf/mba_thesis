@@ -12,7 +12,7 @@ line-length = 160
 
 [tool.flake8]
 count = true
-extend-exclude = ['notebooks/*']
+extend-exclude = ['data/*', 'docs/*', 'notebooks/*', 'output/*']
 ignore = ['E231', 'E241', 'E701']
 max-line-length = 160
 statistics = true
