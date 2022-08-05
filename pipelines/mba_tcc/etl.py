@@ -1,6 +1,6 @@
 from prefect import flow
-
 from utils.config import get_env_var_as_path
+
 from pipelines.mba_tcc.tasks.fix import fix_files
 from pipelines.mba_tcc.tasks.index import make_files_index
 

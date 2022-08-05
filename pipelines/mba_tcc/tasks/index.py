@@ -2,7 +2,6 @@ from pathlib import Path
 
 import pandas as pd
 from prefect import task
-
 from utils.config import get_env_var_as_path
 
 

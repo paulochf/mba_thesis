@@ -2,9 +2,8 @@ from collections import namedtuple
 from pathlib import Path
 
 import pandas as pd
-from prefect import task, flow
+from prefect import flow, task
 from prefect_dask import DaskTaskRunner
-
 from utils.config import get_env_var_as_path
 
 
