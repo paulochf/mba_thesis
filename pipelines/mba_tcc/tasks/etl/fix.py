@@ -4,6 +4,8 @@ from pathlib import Path
 import pandas as pd
 from prefect import flow, task
 from prefect_dask import DaskTaskRunner
+
+from utils.transformation import as_parquet
 from utils.config import get_env_var_as_path
 
 
