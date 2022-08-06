@@ -4,7 +4,7 @@
 
     pip install pipenv  # if you haven't already
     pipenv install
-    pipenv run python pipelines.py
+    pipenv run main
 
 ## Development
 
