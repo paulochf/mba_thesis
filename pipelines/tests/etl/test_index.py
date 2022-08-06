@@ -2,29 +2,30 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 import pandas as pd
+
+from utils.testing import assert_file
 from utils.config import get_env_var_as_path
 
-from tasks.etl.index import make_files_index
+from mba_tcc.tasks.etl.index import make_files_index
 
 
 def test_make_files_index():
     dataset_path = get_env_var_as_path("PATH_DATA_RAW_UCR")
     final_path = get_env_var_as_path("PATH_DATA_FINAL")
+    file_name = "files_index.parquet"
 
-    with TemporaryDirectory(dir=final_path, suffix="_test") as tmp_dir:
+    with TemporaryDirectory(dir=final_path) as tmp_dir:
         path_tmp_dir = Path(tmp_dir)
 
         # Function runs without errors
         result = make_files_index.fn(path_tmp_dir)
         assert result is True
 
-        # Function creates parquet file with same name as input
-        index_file_path = path_tmp_dir / "files_index.parquet"
-        assert index_file_path.exists()
-        assert index_file_path.is_file()
+        # Check if function created parquet file with correct name
+        assert_file(path_tmp_dir / file_name)
 
         # Index parquet file contains information regarding all raw files
-        index_df = pd.read_parquet(index_file_path)
+        index_df = pd.read_parquet(path_tmp_dir / file_name)
         all_raw_files = list(dataset_path.glob("./*.txt"))
         assert len(index_df) == len(all_raw_files)
 

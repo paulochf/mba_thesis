@@ -17,7 +17,7 @@ def test_fix_file():
 
     index_df = pd.read_parquet(final_path / "files_index.parquet")
 
-    with TemporaryDirectory(dir=final_path, suffix="_test") as tmp_dir:
+    with TemporaryDirectory(dir=final_path) as tmp_dir:
         path_tmp_dir = Path(tmp_dir)
         file_1_infos = index_df[index_df.file_number == 1].to_dict(orient="records")[0]
         file_1_txt_path = Path(file_1_infos["file_path"])
@@ -26,9 +26,9 @@ def test_fix_file():
         result = fix_file.fn(1, file_1_txt_path, file_1_infos["file_name"], path_tmp_dir)
         assert result is True
 
-        # Function creates parquet file with same name as input
+        # Check if function created parquet file with correct name
         parquet_file_name = file_1_txt_path.with_suffix(".parquet").name
-        assert_file(path_tmp_dir, parquet_file_name)
+        assert_file(path_tmp_dir / parquet_file_name)
 
         # Parquet file has the same values as input
         file_1_txt_df = pd.read_csv(file_1_txt_path, header=None, names=["vals"])

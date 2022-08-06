@@ -13,3 +13,4 @@ def prepare_files():
 
     make_files_index(final_path)
     fix_files()
+    split_files()
