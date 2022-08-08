@@ -5,48 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7a9b3923-813c-4495-a1d0-2de501106edd" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/.env.example" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/mba_tcc.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/mba_tcc.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/pydantic.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/webResources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/webResources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pipfile" beforeDir="false" afterPath="$PROJECT_DIR$/Pipfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/explorer.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/explorer.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipelines/.env" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipelines/Pipfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipelines/Pipfile.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipelines/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipelines/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipelines/mba_tcc/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipelines/mba_tcc/etl.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipelines/mba_tcc/features.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipelines/mba_tcc/tasks/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipelines/mba_tcc/tasks/etl/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipelines/mba_tcc/tasks/etl/fix.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipelines/mba_tcc/tasks/etl/index.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipelines/mba_tcc/tasks/etl/split.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipelines/mba_tcc/train.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipelines/mba_tcc/visualize.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipelines/run_pipe.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipelines/tests/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipelines/tests/etl/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipelines/tests/etl/test_fix.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipelines/tests/etl/test_index.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipelines/tests/etl/test_split.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipelines/tests/fixtures/input.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipelines/tests/fixtures/output.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipelines/tests/pytest.ini" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipelines/utils/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipelines/utils/config.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipelines/utils/testing.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipelines/utils/transformation.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,7 +83,7 @@
       <workItem from="1659752872221" duration="11822000" />
       <workItem from="1659847817672" duration="599000" />
       <workItem from="1659906646029" duration="10723000" />
-      <workItem from="1659923282802" duration="4832000" />
+      <workItem from="1659923282802" duration="7253000" />
     </task>
     <servers />
   </component>
