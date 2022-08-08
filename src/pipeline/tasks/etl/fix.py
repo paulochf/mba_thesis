@@ -1,3 +1,4 @@
+import logging
 from collections import namedtuple
 from pathlib import Path
 
@@ -5,8 +6,8 @@ import pandas as pd
 from prefect import flow, task
 from prefect_dask import DaskTaskRunner
 
-from utils.transformation import as_parquet
 from utils.config import get_env_var_as_path
+from utils.transformation import as_parquet
 
 INDEXES_TO_FIX = {204, 205, 206, 207, 208, 225, 226, 242, 243}
 
@@ -19,8 +20,9 @@ INDEXES_TO_FIX = {204, 205, 206, 207, 208, 225, 226, 242, 243}
 def fix_file(file_number: int, file_path: Path, file_name: str, output_path: Path, *args, **kwargs) -> bool:
     parquet_file = as_parquet(output_path, file_name)
     if parquet_file.exists():
+        logging.warning(f"File {parquet_file.absolute()} already exists. Skipping.")
         return True
-    
+
     file_to_fix = file_number in INDEXES_TO_FIX
 
     df = pd.read_csv(file_path, header=None, delim_whitespace=file_to_fix)

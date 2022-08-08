@@ -1,13 +1,12 @@
 from collections import namedtuple
-
-import pandas as pd
 from pathlib import Path
 
+import pandas as pd
 from prefect import flow, task
 from prefect_dask import DaskTaskRunner
+
 from utils.config import get_env_var_as_path
-from utils.transformation import df_split
-from utils.transformation import as_parquet
+from utils.transformation import as_parquet, df_split
 
 
 @task(
@@ -15,10 +14,7 @@ from utils.transformation import as_parquet
     tags=["index", "final"],
     version="1",
 )
-def split_file(
-    file_name: str, training_index_end: int, output_train_path: Path, output_test_path: Path,
-    *args, **kwargs
-) -> bool:
+def split_file(file_name: str, training_index_end: int, output_train_path: Path, output_test_path: Path, *args, **kwargs) -> bool:
     input_path = get_env_var_as_path("PATH_DATA_INTERIM_RAW2PARQUET")
 
     data_file = pd.read_parquet(as_parquet(input_path, file_name))

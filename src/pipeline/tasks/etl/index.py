@@ -1,7 +1,9 @@
+import logging
 from pathlib import Path
 
 import pandas as pd
 from prefect import task
+
 from utils.config import get_env_var_as_path
 
 
@@ -13,6 +15,7 @@ from utils.config import get_env_var_as_path
 def make_files_index(output_path: Path) -> bool:
     index_parquet_path = output_path / "files_index.parquet"
     if index_parquet_path.exists():
+        logging.warning(f"File {index_parquet_path.absolute()} already exists. Skipping.")
         return True
 
     dataset_path = get_env_var_as_path("PATH_DATA_RAW_UCR")

@@ -4,10 +4,10 @@ from tempfile import TemporaryDirectory
 
 import pandas as pd
 from pandas.testing import assert_series_equal
+
+from pipeline.tasks.etl.fix import fix_file
 from utils.config import get_env_var_as_path
 from utils.testing import assert_file
-
-from mba_tcc.tasks.etl.fix import fix_file
 
 LOGGER = logging.getLogger(__name__)
 

@@ -8,6 +8,7 @@ black = "==21.7b0"
 isort = "*"
 autoflake = "*"
 pylint = "*"
+python-dotenv = "*"
 
 [packages]
 wandb = "*"
@@ -33,5 +34,4 @@ python_version = "3"
 commit = "cz c"
 lab='jupyter lab --notebook-dir ..'
 main = "python run_pipe.py"
-test = "python -m pytest tests"
-test_debug = "python -m pytest tests -s --pdb --pdbcls=IPython.terminal.debugger:Pdb"
+test = "pytest"

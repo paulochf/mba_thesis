@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="ALL" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="7a9b3923-813c-4495-a1d0-2de501106edd" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/.env.example" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/mba_tcc.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/mba_tcc.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/pydantic.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/webResources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/webResources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pipfile" beforeDir="false" afterPath="$PROJECT_DIR$/Pipfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/explorer.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/explorer.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipelines/.env" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipelines/Pipfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipelines/Pipfile.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipelines/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipelines/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipelines/mba_tcc/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipelines/mba_tcc/etl.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipelines/mba_tcc/features.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipelines/mba_tcc/tasks/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipelines/mba_tcc/tasks/etl/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipelines/mba_tcc/tasks/etl/fix.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipelines/mba_tcc/tasks/etl/index.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipelines/mba_tcc/tasks/etl/split.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipelines/mba_tcc/train.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipelines/mba_tcc/visualize.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipelines/run_pipe.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipelines/tests/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipelines/tests/etl/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipelines/tests/etl/test_fix.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipelines/tests/etl/test_index.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipelines/tests/etl/test_split.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipelines/tests/fixtures/input.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipelines/tests/fixtures/output.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipelines/tests/pytest.ini" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipelines/utils/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipelines/utils/config.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipelines/utils/testing.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipelines/utils/transformation.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Jupyter Notebook" />
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2Cm9DQ5W4p9rLpbjOFLRIDcamBC" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;com.intellij.openapi.externalSystem.service.settings.ExternalSystemGroupConfigurable&quot;: &quot;ALL&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/paulo/Documents/mba_tcc/pipelines/utils/transformation.py&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PythonContentEntriesConfigurable&quot;
+  }
+}</component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <console-settings module-name="mba_tcc" is-module-sdk="true">
+        <option name="myUseModuleSdk" value="true" />
+        <option name="myModuleName" value="mba_tcc" />
+      </console-settings>
+    </option>
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/notebooks/draft" />
+      <recent name="$PROJECT_DIR$/pipelines" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/data/2_final" />
+      <recent name="$PROJECT_DIR$/data/1_interim" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/utils" />
+      <recent name="$PROJECT_DIR$/src/pipeline" />
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$/src/pipeline/tests" />
+      <recent name="$PROJECT_DIR$/pipelines/tests" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7a9b3923-813c-4495-a1d0-2de501106edd" name="Changes" comment="" />
+      <created>1659396775262</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1659396775262</updated>
+      <workItem from="1659396780771" duration="2991000" />
+      <workItem from="1659399791487" duration="19064000" />
+      <workItem from="1659491378527" duration="13219000" />
+      <workItem from="1659659670353" duration="21427000" />
+      <workItem from="1659752872221" duration="11822000" />
+      <workItem from="1659847817672" duration="599000" />
+      <workItem from="1659906646029" duration="10723000" />
+      <workItem from="1659923282802" duration="4832000" />
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

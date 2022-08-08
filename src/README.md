@@ -17,9 +17,10 @@
 
 ## Directory structure
 
+    src
     ├── Pipfile               <- The Pipfile for reproducing the pipelines environment
     ├── run_pipe.py           <- The CLI entry point for all the pipelines
-    ├── <repo_name>           <- Code for the various steps of the pipelines
+    ├── pipeline              <- Code for the various steps of the pipelines
     │   ├── tasks
     │   │   └── etl           <- prefect flows folder
     │   │       ├── fix.py    <- fix flow

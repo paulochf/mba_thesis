@@ -19,9 +19,17 @@ statistics = true
 
 
 [tool.isort]
-known_third_party = ["dotenv", "fastapi", "mba_tcc", "pandas", "prefect", "prefect_dask", "utils"]
+known_third_party = ["dotenv", "fastapi", "pandas", "prefect", "prefect_dask"]
 include_trailing_comma = true
 line_length = 160
 profile = 'black'
 skip_glob = ['notebooks/*']
-src_paths = ['pipelines', 'serve']
+src_paths = ['src', 'serve']
+
+
+[tool.pytest.ini_options]
+addopts = "--pdb --pdbcls=IPython.terminal.debugger:TerminalPdb"
+log_auto_indent = true
+log_cli = true
+log_cli_level = "DEBUG"
+testpaths = ["src/tests"]
