@@ -47,11 +47,12 @@ python_version = "3"
 [scripts]
 beautify = """
 bash -c \"
-isort **/*.py;
-black **/*.py;
+isort .;
+black .;
 autoflake -i -r --expand-star-imports --remove-all-unused-imports --remove-duplicate-keys --remove-unused-variables **/*.py;
-#pflake8 **/*.py\"
-"""
+flake8p
+\""""
 commit = "cz c"
 lab='jupyter lab'
 lintpy = "bash -c \"pylint **/*.py\""
+test = "pytest"
