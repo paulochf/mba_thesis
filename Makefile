@@ -19,7 +19,7 @@ clean:
 
 # Download dataset from source
 data:
-	wget $$URL_DATASET -P $$PATH_DATA_EXTERNAL;
+	wget ${URL_DATASET} -P ${PATH_DATA_EXTERNAL};
 	unzip -j "$$PATH_DATA_EXTERNAL/UCR_TimeSeriesAnomalyDatasets2021.zip" \
 		"AnomalyDatasets_2021/UCR_TimeSeriesAnomalyDatasets2021/FilesAreInHere/UCR_Anomaly_FullData/*txt" \
 		-d "$$PATH_DATA_RAW/UCR_Anomaly_FullData";
@@ -39,13 +39,10 @@ references: data
 
 
 # Set up Python development environment
-requirements: build
-	python3 -m venv ./venv
-	source ./venv/bin/activate
-	pip install -U pipenv
+requirements:
+	pipenv run pip install -U pipenv
 	pipenv shell
 	pipenv sync
-	pre-commit install -f
 
 
 update-repos:
