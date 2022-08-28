@@ -7,7 +7,7 @@ from prefect import flow, task
 from prefect_dask import DaskTaskRunner
 
 from utils.config import get_env_var_as_path
-from utils.transformation import as_parquet
+from utils.transformation import path_as_parquet
 
 INDEXES_TO_FIX = {204, 205, 206, 207, 208, 225, 226, 242, 243}
 
@@ -17,8 +17,8 @@ INDEXES_TO_FIX = {204, 205, 206, 207, 208, 225, 226, 242, 243}
     tags=["files", "interim"],
     version="1",
 )
-def fix_file(file_number: int, file_path: Path, file_name: str, output_path: Path, *args, **kwargs) -> bool:
-    parquet_file = as_parquet(output_path, file_name)
+def fix_file(file_number: int, file_path: Path, file_name: str, save_path: Path, *args, **kwargs) -> bool:
+    parquet_file = path_as_parquet(save_path, file_name)
     if parquet_file.exists():
         logging.warning(f"File {parquet_file.absolute()} already exists. Skipping.")
         return True
@@ -47,4 +47,4 @@ def fix_files():
 
     row: namedtuple
     for row in index_df.reset_index().itertuples():
-        fix_file(**row._asdict(), output_path=interim_raw2parquet_path)
+        fix_file(**row._asdict(), save_path=interim_raw2parquet_path)

@@ -1,5 +1,6 @@
 import logging
 from pathlib import Path
+from pprint import pprint
 
 import pandas as pd
 from prefect import task
@@ -12,14 +13,14 @@ from utils.config import get_env_var_as_path
     tags=["index", "final"],
     version="1",
 )
-def make_files_index(output_path: Path) -> bool:
-    index_parquet_path = output_path / "files_index.parquet"
+def make_files_index(save_path: Path) -> bool:
+    index_parquet_path = save_path / "files_index.parquet"
     if index_parquet_path.exists():
         logging.warning(f"File {index_parquet_path.absolute()} already exists. Skipping.")
         return True
 
     dataset_path = get_env_var_as_path("PATH_DATA_RAW_UCR")
-    dataset_files = dataset_path.glob("./*.txt")
+    dataset_files = list(dataset_path.glob("./*.txt"))
 
     paths_as_strs = map(str, dataset_files)
     files_df = pd.DataFrame(paths_as_strs, columns=["file_path"])
