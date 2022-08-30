@@ -9,6 +9,7 @@ isort = "*"
 autoflake = "*"
 pylint = "*"
 python-dotenv = "*"
+sktime = "*"
 
 [packages]
 wandb = "*"
