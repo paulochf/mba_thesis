@@ -3,9 +3,9 @@ from tempfile import TemporaryDirectory
 
 import pandas as pd
 
-from pipeline.tasks.etl.index import make_files_index
-from utils.config import get_env_var_as_path
-from utils.testing import assert_file
+from mba_tcc.pipeline.tasks.etl.index import make_files_index
+from mba_tcc.utils.config import get_env_var_as_path
+from mba_tcc.utils.testing import assert_file
 
 
 def test_make_files_index():

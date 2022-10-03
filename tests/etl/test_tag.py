@@ -3,10 +3,10 @@ from tempfile import TemporaryDirectory
 
 import pandas as pd
 
-from pipeline.tasks.etl.tag import tag_range
-from utils.config import get_env_var_as_path
-from utils.testing import assert_file
-from utils.transformation import path_as_parquet
+from mba_tcc.pipeline.tasks.etl.tag import tag_range
+from mba_tcc.utils.config import get_env_var_as_path
+from mba_tcc.utils.testing import assert_file
+from mba_tcc.utils.transformation import path_as_parquet
 
 
 def test_split_file(file_index_row):

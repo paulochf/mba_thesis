@@ -4,8 +4,8 @@ import pandas as pd
 
 from pathlib import Path
 
-from pipeline.tasks.etl.index import make_files_index
-from utils.config import get_env_var_as_path
+from mba_tcc.pipeline.tasks.etl.index import make_files_index
+from mba_tcc.utils.config import get_env_var_as_path
 
 
 if __name__ == "__main__":
