@@ -1,11 +1,10 @@
 import logging
 from pathlib import Path
-from pprint import pprint
 
 import pandas as pd
 from prefect import task
 
-from utils.config import get_env_var_as_path
+from mba_tcc.utils.config import get_env_var_as_path
 
 
 @task(

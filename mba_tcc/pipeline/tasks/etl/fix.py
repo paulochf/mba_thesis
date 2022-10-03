@@ -6,8 +6,8 @@ import pandas as pd
 from prefect import flow, task
 from prefect_dask import DaskTaskRunner
 
-from utils.config import get_env_var_as_path
-from utils.transformation import path_as_parquet
+from mba_tcc.utils.config import get_env_var_as_path
+from mba_tcc.utils.transformation import path_as_parquet
 
 INDEXES_TO_FIX = {204, 205, 206, 207, 208, 225, 226, 242, 243}
 
@@ -24,7 +24,6 @@ def fix_file(file_number: int, file_path: Path, file_name: str, save_path: Path,
         return True
 
     file_to_fix = file_number in INDEXES_TO_FIX
-
     df = pd.read_csv(file_path, header=None, delim_whitespace=file_to_fix)
 
     if file_to_fix:

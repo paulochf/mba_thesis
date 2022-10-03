@@ -1,35 +1,44 @@
-[tool.black]
-extend-exclude = '''
-## A regex preceded with ^/ will apply only to files and directories
-## in the root of the project.
-(
-  ^/notebooks  # exclude notebooks folder
-)
-'''
-include = '\.pyi?$'
-line-length = 160
+[tool.poetry]
+name = "mba-tcc"
+version = "0.1.0"
+description = ""
+authors = ["Paulo Haddad <paulochf@gmail.com>"]
+readme = "README.md"
+packages = [{include = "mba_tcc"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+jupyter = "*"
+jupyterlab = "^3.4.7"
+numpy = "*"
+pandas = "*"
+prefect = "*"
+prefect-dask = "*"
+pyarrow = "*"
+python-dotenv = {extras = ["cli"], version = "^0.21.0"}
+#scipy = "*"
+#seaborn = "*"
+typer = "*"
 
 
-[tool.flake8]
-count = true
-extend-exclude = ['data/*', 'docs/*', 'notebooks/*', 'output/*']
-ignore = ['E231', 'E241', 'E701']
-max-line-length = 160
-statistics = true
+[tool.poetry.group.dev.dependencies]
+autoflake = "*"
+black = "*"
+devtools = "*"
+ipdb = "*"
+ipython = "*"
+isort = "*"
+pylint = "*"
+pytest = "*"
+pytest-mock = "*"
 
 
-[tool.isort]
-known_third_party = ["dotenv", "fastapi", "pandas", "prefect", "prefect_dask"]
-include_trailing_comma = true
-line_length = 160
-profile = 'black'
-skip_glob = ['notebooks/*']
-src_paths = ['src', 'serve']
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
 
 
-[tool.pytest.ini_options]
-addopts = "--pdb --pdbcls=IPython.terminal.debugger:TerminalPdb"
-log_auto_indent = true
-log_cli = true
-log_cli_level = "DEBUG"
-testpaths = ["src/tests"]
+# Python-style entrypoints and scripts are easily expressed
+[tool.poetry.scripts]
+main = "mba_tcc.run_pipe:main"
+test = "pytest"

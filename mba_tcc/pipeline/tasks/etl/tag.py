@@ -6,8 +6,8 @@ import pandas as pd
 from prefect import flow, task
 from prefect_dask import DaskTaskRunner
 
-from utils.config import get_env_var_as_path
-from utils.transformation import path_as_parquet
+from mba_tcc.utils.config import get_env_var_as_path
+from mba_tcc.utils.transformation import path_as_parquet
 
 
 @task(
@@ -19,7 +19,7 @@ def tag_range(file_name: str, training_index_end: int, anomaly_index_start: int,
     input_path = get_env_var_as_path("PATH_DATA_INTERIM_RAW2PARQUET")
     data_file = pd.read_parquet(path_as_parquet(input_path, file_name))
 
-    data_file.loc[:, ["train_set", "test_set", "anomaly_set"]] = 0
+    data_file[["train_set", "test_set", "anomaly_set"]] = 0
     data_file.loc[0:training_index_end-1, ["train_set"]] = 1
     data_file.loc[training_index_end:, ["test_set"]] = 1
     data_file.loc[anomaly_index_start-1:anomaly_index_end-1, ["anomaly_set"]] = 1
@@ -45,4 +45,4 @@ def tag_ranges_and_counts():
 
     index_df["row_count"] = row_counts
 
-    index_df.to_parquet(index_path / "files_index.parquet", index=False)
+    index_df.to_parquet(index_path / "files_index_tagged.parquet", index=False)
