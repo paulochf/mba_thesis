@@ -10,6 +10,7 @@ packages = [{include = "mba_tcc"}]
 python = "^3.10"
 jupyter = "*"
 jupyterlab = "^3.4.7"
+matplotlib = "^3.6.0"
 numpy = "*"
 pandas = "*"
 prefect = "*"
