@@ -10,16 +10,16 @@ from mba_tcc.utils.transformation import path_as_parquet
 
 
 def test_split_file(file_index_row):
-    final_train_path = get_env_var_as_path("PATH_DATA_FINAL_INPUT")
+    final_input_path = get_env_var_as_path("PATH_DATA_FINAL_INPUT")
 
     file_name = file_index_row["file_name"]
 
-    with TemporaryDirectory(dir=final_train_path) as save_dir:
+    with TemporaryDirectory(dir=final_input_path) as save_dir:
         path_save_dir = Path(save_dir)
 
         # Function runs without errors
         result = tag_range.fn(**file_index_row, save_path=path_save_dir)
-        assert result is True
+        assert result == 79795
 
         # Get resulted data parquet file name
         data_file_path = path_as_parquet(path_save_dir, file_name)
@@ -28,8 +28,9 @@ def test_split_file(file_index_row):
         assert_file(data_file_path)
 
         data_file = pd.read_parquet(data_file_path)
-
         assert len(data_file) == file_index_row["row_count"]
-        assert data_file[data_file.train_set].sum(axis=1) == file_index_row["training_index_end"]
-        assert data_file[data_file.test_set].sum(axis=1) == file_index_row["row_count"] - file_index_row["training_index_end"]
-        assert data_file[data_file.anomaly_set].sum(axis=1) == file_index_row["anomaly_index_end"] - file_index_row["anomaly_index_start"]
+
+        tag_counts = data_file.sum()
+        assert tag_counts['train_set'] == file_index_row["training_index_end"]
+        assert tag_counts['test_set'] == file_index_row["row_count"] - file_index_row["training_index_end"]
+        assert tag_counts['anomaly_set'] == file_index_row["anomaly_index_end"] - file_index_row["anomaly_index_start"] + 1

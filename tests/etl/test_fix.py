@@ -9,8 +9,6 @@ from mba_tcc.pipeline.tasks.etl.fix import fix_file
 from mba_tcc.utils.config import get_env_var_as_path
 from mba_tcc.utils.testing import assert_file
 
-LOGGER = logging.getLogger(__name__)
-
 
 def test_fix_file():
     final_path = get_env_var_as_path("PATH_DATA_FINAL")
