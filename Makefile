@@ -1,7 +1,7 @@
 #!/usr/bin/env -S make -f
 
-.PHONY: clean data lint references requirements help
-.ONESHELL: clean data lint references requirements help
+.PHONY: build clean data references update-repos venv help
+.ONESHELL: clean data references update-repos venv help
 
 include .env
 
@@ -38,16 +38,21 @@ references: data
 		rm -rf ./AnomalyDatasets_2021;
 
 
-# Set up Python development environment
-requirements:
-	pipenv run pip install -U pipenv
-	pipenv shell
-	pipenv sync
+test:
+	poetry run test_prepare
+	pytest
 
 
 update-repos:
 	@git push origin main;
 	@git push github main;
+
+
+venv:
+	python -m venv .venv
+	source .venv/bin/activate
+	pip install -U poetry
+	poetry install
 
 
 #################################################################################

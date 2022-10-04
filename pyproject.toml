@@ -41,4 +41,4 @@ build-backend = "poetry.core.masonry.api"
 # Python-style entrypoints and scripts are easily expressed
 [tool.poetry.scripts]
 main = "mba_tcc.run_pipe:main"
-test = "pytest"
+test_prepare = "tests.test_utils:make_test_resource"
