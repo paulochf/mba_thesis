@@ -9,5 +9,5 @@ from mba_tcc.pipeline.train import train_flow
 def main() -> Any:
     load_dotenv()
 
-    etl_flow()
-    # train_flow()
+    # etl_flow()
+    train_flow()
