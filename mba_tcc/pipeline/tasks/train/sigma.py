@@ -1,3 +1,4 @@
+from functools import partial
 from json import dumps
 from pathlib import Path
 from typing import List, Tuple
@@ -14,7 +15,14 @@ from mba_tcc.utils.config import get_env_var_as_path
 from mba_tcc.utils.transformation import path_as_parquet, get_dataset_folder
 
 
-mpl.use("Agg")
+def make_column(w: int = None, stat_name: str = None, col_name: str = "vals"):
+    return f"{col_name}_{stat_name}_{w}_w"
+
+
+make_column_mean = partial(make_column, stat_name="rolling_mean")
+make_column_std = partial(make_column, stat_name="rolling_std")
+make_column_residual = partial(make_column, stat_name="rolling_residual")
+make_column_zscore = partial(make_column, stat_name="rolling_zscore")
 
 
 def sigma_series(df: pd.DataFrame, w: int = 3, col_name: str = "vals") -> pd.DataFrame:
@@ -23,12 +31,12 @@ def sigma_series(df: pd.DataFrame, w: int = 3, col_name: str = "vals") -> pd.Dat
     df_rolling_std: pd.Series = df_rolling.std()
 
     new_cols: dict = {
-        (col_name, "rolling_mean", str(w), "w"): df_rolling_mean,
-        (col_name, "rolling_std", str(w), "w"): df_rolling_std,
-        (col_name, "rolling_residual", str(w), "w"): lambda ddf: (ddf.vals - df_rolling_mean),
-        (col_name, "rolling_zscore", str(w), "w"): lambda ddf: ddf["_".join((col_name, "rolling_residual", str(w), "w"))] / df_rolling_std,
+        make_column_mean(col_name=col_name, w=w): df_rolling_mean,
+        make_column_std(col_name=col_name, w=w): df_rolling_std,
+        make_column_residual(col_name=col_name, w=w): lambda ddf: (ddf.vals - df_rolling_mean),
+        make_column_zscore(col_name=col_name, w=w): lambda ddf: ddf[make_column_residual(col_name=col_name, w=w)] / df_rolling_std,
     }
-    return df.assign(**{"_".join(k): v for k, v in new_cols.items()})
+    return df.assign(**new_cols)
 
 
 @task(
@@ -37,16 +45,17 @@ def sigma_series(df: pd.DataFrame, w: int = 3, col_name: str = "vals") -> pd.Dat
     version="1",
 )
 def calculate_series(params: dict, output_path: Path, step: int = 3) -> bool:
+    anomaly_index_end: int = params["anomaly_index_end"]
+    anomaly_index_start: int = params["anomaly_index_start"]
     file_name: str = params["file_name"]
     file_number: int = params["file_number"]
     mnemonic: str = params["mnemonic"]
-    anomaly_index_start: int = params["anomaly_index_start"]
-    anomaly_index_end: int = params["anomaly_index_end"]
 
     ###
     file_folder_path = get_dataset_folder(output_path, file_number, mnemonic)
     file_folder_path.mkdir(parents=True, exist_ok=True)
 
+    ###
     input_path: Path = get_env_var_as_path("PATH_DATA_FINAL_INPUT")
     dataset_path: Path = get_dataset_folder(input_path, file_number, mnemonic)
     input_file: Path = path_as_parquet(dataset_path, file_name)
@@ -60,20 +69,21 @@ def calculate_series(params: dict, output_path: Path, step: int = 3) -> bool:
     make_plot_lines_raw(train_file, file_folder_path, plot_range)
 
     ###
-    result: pd.DataFrame = None
-    zscore_column: str = None
-    window_size: int = 0
+    best_window: int = None
     input_file_len: int = len(train_file)
+    result: pd.DataFrame = None
+    window_size: int = 0
+    zscores_column: str = None
     zscores_min: float = -3
     zscores_max: float = 3
-    best_window: int = None
 
     while window_size <= input_file_len:
         window_size = window_size + step
-        zscore_column = f"vals_zscore_{window_size}_w"
 
         result = sigma_series(train_file, w=window_size)
-        zscores: pd.Series = result.loc[result.anomaly_set == 1, zscore_column]
+
+        zscores_column = make_column_residual(w=window_size)
+        zscores: pd.Series = result.loc[result.anomaly_set == 1, zscores_column]
         if any([
             zscores.min() < zscores_min,
             zscores.max() > zscores_max,
@@ -93,10 +103,10 @@ def calculate_series(params: dict, output_path: Path, step: int = 3) -> bool:
 
     results: pd.DataFrame = pd.concat([
         train_file,
-        result[[zscore_column]]
+        result[[zscores_column]]
     ], axis=1)
     results.to_parquet(file_folder_path / "results.parquet")
-    make_plot_lines_results(results, file_folder_path, plot_range, zscore_column)
+    make_plot_lines_results(results, file_folder_path, plot_range, zscores_column)
 
     return True
 
