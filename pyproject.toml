@@ -7,9 +7,10 @@ readme = "README.md"
 packages = [{include = "mba_tcc"}]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = ">=3.10,<3.11"
 jupyter = "*"
 jupyterlab = "^3.4.7"
+luminaire = "^0.4.0"
 matplotlib = "^3.6.0"
 numpy = "*"
 pandas = "*"
@@ -19,6 +20,7 @@ pyarrow = "*"
 python-dotenv = {extras = ["cli"], version = "^0.21.0"}
 #scipy = "*"
 #seaborn = "*"
+scipy = "^1.9.1"
 typer = "*"
 
 
