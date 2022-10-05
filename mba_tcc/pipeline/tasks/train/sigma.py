@@ -2,7 +2,6 @@ from json import dumps
 from pathlib import Path
 from typing import List, Tuple
 
-import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -10,8 +9,9 @@ import pandas as pd
 from pandas.core.window import Rolling
 from prefect import task
 
+from mba_tcc.pipeline.train import load_dataset
 from mba_tcc.utils.config import get_env_var_as_path
-from mba_tcc.utils.transformation import path_as_parquet
+from mba_tcc.utils.transformation import path_as_parquet, get_dataset_folder
 
 
 mpl.use("Agg")
@@ -44,13 +44,13 @@ def calculate_series(params: dict, output_path: Path, step: int = 3) -> bool:
     anomaly_index_end: int = params["anomaly_index_end"]
 
     ###
-    file_folder_path = output_path / "sigma" / f"{file_number:03d}_{mnemonic}"
+    file_folder_path = get_dataset_folder(output_path, file_number, mnemonic)
     file_folder_path.mkdir(parents=True, exist_ok=True)
 
     input_path: Path = get_env_var_as_path("PATH_DATA_FINAL_INPUT")
-    input_file: Path = path_as_parquet(input_path, file_name)
+    dataset_path: Path = get_dataset_folder(input_path, file_number, mnemonic)
+    input_file: Path = path_as_parquet(dataset_path, file_name)
     train_file: pd.DataFrame = pd.read_parquet(input_file)
-    make_plot_histogram(train_file, file_folder_path)
 
     ###
     plot_range: Tuple[int, int] = (

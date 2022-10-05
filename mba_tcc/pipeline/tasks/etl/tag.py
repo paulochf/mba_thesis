@@ -6,8 +6,9 @@ import pandas as pd
 from prefect import flow, task
 from prefect_dask import DaskTaskRunner
 
+from mba_tcc.pipeline.tasks.train.sigma import make_plot_histogram
 from mba_tcc.utils.config import get_env_var_as_path
-from mba_tcc.utils.transformation import path_as_parquet
+from mba_tcc.utils.transformation import path_as_parquet, get_dataset_folder
 
 
 @task(
@@ -15,7 +16,7 @@ from mba_tcc.utils.transformation import path_as_parquet
     tags=["index", "final"],
     version="1",
 )
-def tag_range(file_name: str, training_index_end: int, anomaly_index_start: int, anomaly_index_end: int, save_path: Path, *args, **kwargs) -> int:
+def tag_range(file_name: str, mnemonic: str, file_number: int, training_index_end: int, anomaly_index_start: int, anomaly_index_end: int, save_path: Path, *args, **kwargs) -> int:
     input_path = get_env_var_as_path("PATH_DATA_INTERIM_RAW2PARQUET")
     data_file = pd.read_parquet(path_as_parquet(input_path, file_name))
 
@@ -24,7 +25,11 @@ def tag_range(file_name: str, training_index_end: int, anomaly_index_start: int,
     data_file.loc[training_index_end:, ["test_set"]] = 1
     data_file.loc[anomaly_index_start-1:anomaly_index_end-1, ["anomaly_set"]] = 1
 
-    data_file.to_parquet(path_as_parquet(save_path, file_name))
+    dataset_path = get_dataset_folder(save_path, file_number, mnemonic)
+    dataset_path.mkdir(parents=True, exist_ok=True)
+    make_plot_histogram(data_file, dataset_path)
+
+    data_file.to_parquet(path_as_parquet(dataset_path, file_name))
 
     return len(data_file)
 
