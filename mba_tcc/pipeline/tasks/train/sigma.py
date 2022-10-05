@@ -10,9 +10,8 @@ import pandas as pd
 from pandas.core.window import Rolling
 from prefect import task
 
-from mba_tcc.pipeline.train import load_dataset
 from mba_tcc.utils.config import get_env_var_as_path
-from mba_tcc.utils.transformation import path_as_parquet, get_dataset_folder
+from mba_tcc.utils.transformation import get_dataset_folder
 
 
 def make_column(w: int = None, stat_name: str = None, col_name: str = "vals"):
@@ -58,8 +57,7 @@ def calculate_series(params: dict, output_path: Path, step: int = 3) -> bool:
     ###
     input_path: Path = get_env_var_as_path("PATH_DATA_FINAL_INPUT")
     dataset_path: Path = get_dataset_folder(input_path, file_number, mnemonic)
-    input_file: Path = path_as_parquet(dataset_path, file_name)
-    train_file: pd.DataFrame = pd.read_parquet(input_file)
+    train_file: pd.DataFrame = pd.read_parquet(dataset_path / "data.parquet")
 
     ###
     plot_range: Tuple[int, int] = (

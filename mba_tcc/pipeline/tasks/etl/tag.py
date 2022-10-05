@@ -29,7 +29,7 @@ def tag_range(file_name: str, mnemonic: str, file_number: int, training_index_en
     dataset_path.mkdir(parents=True, exist_ok=True)
     make_plot_histogram(data_file, dataset_path)
 
-    data_file.to_parquet(path_as_parquet(dataset_path, file_name))
+    data_file.to_parquet(dataset_path / "data.parquet")
 
     return len(data_file)
 
