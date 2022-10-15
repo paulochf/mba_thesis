@@ -2,6 +2,9 @@ import os
 from pathlib import Path
 
 
+DEFAULT_VAL_COLUMN: str = "vals"
+
+
 def get_env_var_as_path(var_name: str) -> Path:
     var_value = os.getenv(var_name)
     if not var_value:

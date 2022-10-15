@@ -2,12 +2,13 @@ from collections import namedtuple
 from pathlib import Path
 from typing import List
 
+import numpy as np
 import pandas as pd
 from prefect import flow, task
 from prefect_dask import DaskTaskRunner
 
-from mba_tcc.pipeline.tasks.train.sigma import make_plot_histogram
 from mba_tcc.utils.config import get_env_var_as_path
+from mba_tcc.utils.plotting import make_plot_histogram
 from mba_tcc.utils.transformation import path_as_parquet, get_dataset_folder
 
 
@@ -28,6 +29,8 @@ def tag_range(file_name: str, mnemonic: str, file_number: int, training_index_en
     dataset_path = get_dataset_folder(save_path, file_number, mnemonic)
     dataset_path.mkdir(parents=True, exist_ok=True)
     make_plot_histogram(data_file, dataset_path)
+    make_plot_histogram(data_file.loc[data_file.train_set == 1], dataset_path, plot_suffix="train")
+    data_file.loc[data_file.train_set == 1].describe(percentiles=np.arange(0, 1., .05)).to_csv(dataset_path / "stats.csv")
 
     data_file.to_parquet(dataset_path / "data.parquet")
 

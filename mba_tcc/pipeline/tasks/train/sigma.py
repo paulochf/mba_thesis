@@ -1,20 +1,20 @@
+from datetime import datetime
 from functools import partial
 from json import dumps
 from pathlib import Path
-from typing import List, Tuple
+from typing import Tuple
 
-import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
 
 from pandas.core.window import Rolling
 from prefect import task
 
-from mba_tcc.utils.config import get_env_var_as_path
-from mba_tcc.utils.transformation import get_dataset_folder
+from mba_tcc.utils.config import get_env_var_as_path, DEFAULT_VAL_COLUMN
+from mba_tcc.utils.plotting import make_plot_lines_results, make_plot_lines_raw
+from mba_tcc.utils.transformation import get_dataset_folder, save_as_json
 
 
-def make_column(w: int = None, stat_name: str = None, col_name: str = "vals"):
+def make_column(w: int = None, stat_name: str = None, col_name: str = DEFAULT_VAL_COLUMN):
     return f"{col_name}_{stat_name}_{w}_w"
 
 
@@ -24,7 +24,12 @@ make_column_residual = partial(make_column, stat_name="rolling_residual")
 make_column_zscore = partial(make_column, stat_name="rolling_zscore")
 
 
-def sigma_series(df: pd.DataFrame, w: int = 3, col_name: str = "vals") -> pd.DataFrame:
+def zscore_metric(data: pd.DataFrame) -> int:
+    outlier_counts = ((data < -3) | (data > 3)).sum()
+    return int(outlier_counts)
+
+
+def sigma_series(df: pd.DataFrame, w: int = 3, col_name: str = DEFAULT_VAL_COLUMN) -> pd.DataFrame:
     df_rolling: Rolling = df[col_name].rolling(window=w)
     df_rolling_mean: pd.Series = df_rolling.mean()
     df_rolling_std: pd.Series = df_rolling.std()
@@ -38,35 +43,8 @@ def sigma_series(df: pd.DataFrame, w: int = 3, col_name: str = "vals") -> pd.Dat
     return df.assign(**new_cols)
 
 
-@task(
-    description="Calculates the mean and the 3 sigma band for the series.",
-    tags=["index", "final"],
-    version="1",
-)
-def calculate_series(params: dict, output_path: Path, step: int = 3) -> bool:
-    anomaly_index_end: int = params["anomaly_index_end"]
-    anomaly_index_start: int = params["anomaly_index_start"]
-    file_name: str = params["file_name"]
-    file_number: int = params["file_number"]
-    mnemonic: str = params["mnemonic"]
-
-    ###
-    file_folder_path = get_dataset_folder(output_path, file_number, mnemonic)
-    file_folder_path.mkdir(parents=True, exist_ok=True)
-
-    ###
-    input_path: Path = get_env_var_as_path("PATH_DATA_FINAL_INPUT")
-    dataset_path: Path = get_dataset_folder(input_path, file_number, mnemonic)
-    train_file: pd.DataFrame = pd.read_parquet(dataset_path / "data.parquet")
-
-    ###
-    plot_range: Tuple[int, int] = (
-        int(anomaly_index_start * 0.99),
-        int(anomaly_index_end * 1.01)
-    )
-    make_plot_lines_raw(train_file, file_folder_path, plot_range)
-
-    ###
+def calculate_zscores(params, step, train_file):
+    # Calculate mean +- 3 * stddev using z-scores
     best_window: int = None
     input_file_len: int = len(train_file)
     result: pd.DataFrame = None
@@ -91,53 +69,44 @@ def calculate_series(params: dict, output_path: Path, step: int = 3) -> bool:
             zscores_max = zscores.max()
             break
 
-    params["window_size"] = best_window
-    params["zscore_min"] = zscores_min
-    params["zscore_max"] = zscores_max
+    notanomaly_set: pd.Series = result.loc[result.anomaly_set == 0, zscores_column]
 
-    (file_folder_path / "params.json").write_text(
-        dumps(params, indent=4, sort_keys=True)
-    )
+    params.update({
+        "anomaly_set_best_window_size": best_window,
+        "anomaly_set_zscore_min": float(zscores_min),
+        "anomaly_set_zscore_max": float(zscores_max),
+        "notanomaly_set_zscore_max": float(notanomaly_set.max()),
+        "notanomaly_set_zscore_min": float(notanomaly_set.min()),
+    })
+
+    return result, zscores_column
+
+
+@task(
+    description="Calculates the mean and the 3 sigma band for the series.",
+    tags=["index", "final"],
+    version="1",
+)
+def sigma_method(train_file: pd.DataFrame, output_path: Path, plot_range: Tuple[int, int], params: dict, step: int = 3) -> bool:
+    t_start: datetime = datetime.now()
+    result, zscores_column = calculate_zscores(params, step, train_file)
+    t_end: datetime = datetime.now()
+
+    params["running_time_in_seconds"] = (t_end - t_start).total_seconds()
+
+    # Save results
+    save_as_json(params, output_path / "sigma_params.json")
 
     results: pd.DataFrame = pd.concat([
         train_file,
         result[[zscores_column]]
     ], axis=1)
-    results.to_parquet(file_folder_path / "results.parquet")
-    make_plot_lines_results(results, file_folder_path, plot_range, zscores_column)
+
+    results.to_parquet(output_path / "results_zscore.parquet")
+
+    make_plot_lines_results(results[results.train_set == 1], output_path / "zscore_train_set.png")
+    make_plot_lines_results(results[results.test_set == 1], output_path / "zscore_test_set.png")
+    make_plot_lines_results(results[results.anomaly_set == 1], output_path / "zscore_anomaly_set.png", plot_range)
+    make_plot_lines_results(results, output_path / "zscore_full_set.png")
 
     return True
-
-
-def make_plot_lines_results(results, export_path, plot_range, zscore_col):
-    tmp_df = results.copy()
-    tmp_df.loc[tmp_df.anomaly_set == 0, [zscore_col]] = np.nan
-    tmp_df = tmp_df.loc[slice(*plot_range), :]
-    secondary_y: List[str] = list(tmp_df.drop(columns=["vals"]).columns)
-    ax = tmp_df.plot.line(
-        figsize=(14, 6),
-        secondary_y=secondary_y,
-    )
-    plt.axhline(3, color="red", linestyle="dotted")
-    plt.axhline(-3, color="red", linestyle="dotted")
-    h1, l1 = ax.get_legend_handles_labels()
-    h2, l2 = ax.right_ax.get_legend_handles_labels()
-    ax.legend(h1 + h2, l1 + l2, loc='lower left')
-    plt.savefig(str(export_path / "results.png"))
-    plt.close()
-
-
-def make_plot_lines_raw(train_file, export_path, plot_range):
-    sub_anomaly = train_file.loc[slice(*plot_range), ["vals", "anomaly_set", "test_set"]]
-    ax = sub_anomaly.plot.line(figsize=(14, 6), secondary_y=["anomaly_set", "test_set"])
-    h1, l1 = ax.get_legend_handles_labels()
-    h2, l2 = ax.right_ax.get_legend_handles_labels()
-    ax.legend(h1 + h2, l1 + l2, loc='lower left')
-    plt.savefig(str(export_path / "input.png"))
-    plt.close()
-
-
-def make_plot_histogram(train_file, export_path):
-    train_file.vals.plot.hist()
-    plt.savefig(str(export_path / "histogram.png"))
-    plt.close()
