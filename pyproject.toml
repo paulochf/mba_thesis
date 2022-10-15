@@ -8,9 +8,10 @@ packages = [{include = "mba_tcc"}]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.11"
+bokeh = "^2.4.3"
+hyperopt = "^0.2.7"
 jupyter = "*"
 jupyterlab = "^3.4.7"
-luminaire = "^0.4.0"
 matplotlib = "^3.6.0"
 numpy = "*"
 pandas = "*"
@@ -18,10 +19,10 @@ prefect = "*"
 prefect-dask = "*"
 pyarrow = "*"
 python-dotenv = {extras = ["cli"], version = "^0.21.0"}
+#darts = "^0.22.0"
 #scipy = "*"
 #seaborn = "*"
-scipy = "^1.9.1"
-typer = "*"
+#typer = "*"
 
 
 [tool.poetry.group.dev.dependencies]
