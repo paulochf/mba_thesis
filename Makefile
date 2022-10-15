@@ -51,7 +51,7 @@ update-repos:
 venv:
 	python -m venv .venv
 	source .venv/bin/activate
-	pip install -U poetry
+	pip install -U poetry virtualenv
 	poetry install
 
 
