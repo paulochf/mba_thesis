@@ -1,7 +1,7 @@
 #!/usr/bin/env -S make -f
 
-.PHONY: build clean data references update-repos venv help
-.ONESHELL: clean data references update-repos venv help
+.PHONY: build clean data references update-repos venv venv_activate venv_create venv_install help
+.ONESHELL: clean data references update-repos venv venv_activate venv_create venv_install help
 
 include .env
 
@@ -48,11 +48,20 @@ update-repos:
 	@git push github main;
 
 
-venv:
+venv_create:
 	python -m venv .venv
+
+
+venv_activate:
 	source .venv/bin/activate
+
+
+venv_install:
 	pip install -U poetry virtualenv
 	poetry install
+
+
+venv: venv_create venv_activate venv_install
 
 
 #################################################################################
