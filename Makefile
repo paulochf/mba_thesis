@@ -48,15 +48,9 @@ update-repos:
 	@git push github main;
 
 
-venv_create:
+venv:
 	python -m venv .venv
-
-
-venv_activate:
 	source .venv/bin/activate
-
-
-venv_install:
 	pip install -U poetry virtualenv
 	poetry install
 
