@@ -16,6 +16,8 @@ from mba_tcc.utils.transformation import get_dataset_folder
 def train_flow():
     index_df = load_file_index()
 
+    input_path: Path = get_env_var_as_path("PATH_DATA_FINAL_INPUT")
+
     trained_assets_path = get_env_var_as_path("PATH_DATA_FINAL_TRAINING")
     trained_assets_path.mkdir(parents=True, exist_ok=True)
 
@@ -23,17 +25,14 @@ def train_flow():
 
     params: dict
     for params in index_records:
-        anomaly_index_end: int = params["anomaly_index_end"]
         anomaly_index_start: int = params["anomaly_index_start"]
-        file_number: int = params["file_number"]
-        mnemonic: str = params["mnemonic"]
+        anomaly_index_end: int = params["anomaly_index_end"]
 
-        file_folder_path = get_dataset_folder(trained_assets_path, file_number, mnemonic)
+        file_folder_path = get_dataset_folder(trained_assets_path, **params)
         file_folder_path.mkdir(parents=True, exist_ok=True)
 
         # Load data file
-        input_path: Path = get_env_var_as_path("PATH_DATA_FINAL_INPUT")
-        dataset_path: Path = get_dataset_folder(input_path, file_number, mnemonic)
+        dataset_path: Path = get_dataset_folder(input_path, **params)
         train_file: pd.DataFrame = pd.read_parquet(dataset_path / "data.parquet")
 
         # # Determine the anomaly range for plotting
@@ -42,5 +41,6 @@ def train_flow():
             int(anomaly_index_end * 1.01)
         )
 
-        sigma_method(train_file, file_folder_path, plot_range, params)
-        oneliner_method(train_file, file_folder_path,   plot_range)
+        sigma_method(train_file, file_folder_path, plot_range, params, all)
+        sigma_method(train_file, file_folder_path, plot_range, params, any)
+        oneliner_method(train_file, file_folder_path, plot_range)

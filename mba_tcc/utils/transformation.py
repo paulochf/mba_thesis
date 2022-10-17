@@ -2,7 +2,7 @@ from typing import Any
 
 import numpy as np
 
-from json import JSONEncoder, dumps
+from json import JSONEncoder, dump
 from pathlib import Path
 
 
@@ -23,7 +23,7 @@ def path_as_parquet(folder_path: Path, file_name: str) -> Path:
     return (folder_path / file_name).with_suffix(".parquet")
 
 
-def get_dataset_folder(parent_path: Path, file_number: int, mnemonic: str) -> Path:
+def get_dataset_folder(parent_path: Path, file_number: int, mnemonic: str, **kwargs) -> Path:
     """
 
     :rtype: object
@@ -32,4 +32,4 @@ def get_dataset_folder(parent_path: Path, file_number: int, mnemonic: str) -> Pa
 
 
 def save_as_json(obj: Any, save_path: Path):
-    save_path.write_text(dumps(obj, indent=4, sort_keys=True, cls=NumpyEncoder))
+    dump(obj, save_path.open(mode="w"), indent=4, sort_keys=True, cls=NumpyEncoder)

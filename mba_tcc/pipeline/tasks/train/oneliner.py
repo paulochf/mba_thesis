@@ -14,15 +14,15 @@ from functools import partial
 
 from hyperopt import fmin, tpe, hp, STATUS_OK, Trials, pyll
 
-from mba_tcc.utils.config import DEFAULT_VAL_COLUMN
+from mba_tcc.utils.config import DEFAULT_VAL_COLUMN, DEFAULT_PREDICTED_VALUE, DEFAULT_PREDICTED_ANOMALY
 
 
-def one_liner_metric(data: pd.DataFrame = None) -> int:
+def oneliner_metric(data: pd.DataFrame = None) -> int:
     counts = (data["anomaly_set"] - data["predicted_anomaly"] == 0).abs().sum()
     return int(counts)
 
 
-def one_liner_train(data: pd.DataFrame = None, return_data: bool = False, **params) -> Union[pd.DataFrame, float]:
+def oneliner_train(data: pd.DataFrame = None, return_data: bool = False, **params) -> Union[pd.DataFrame, float]:
     b: float = params["B"]
     c: float = params["C"]
     k: int = int(params["K"])
@@ -41,14 +41,14 @@ def one_liner_train(data: pd.DataFrame = None, return_data: bool = False, **para
     df_rolling_mean: pd.Series = df_rolling.mean()
     df_rolling_std: pd.Series = df_rolling.std()
 
-    data["predicted_val"] = (k != 1) * df_rolling_mean + c * df_rolling_std + b
-    data["predicted_anomaly"] = (data[DEFAULT_VAL_COLUMN] > data["predicted_val"]).astype("int")
+    data[DEFAULT_PREDICTED_VALUE] = (k != 1) * df_rolling_mean + c * df_rolling_std + b
+    data[DEFAULT_PREDICTED_ANOMALY] = (data[DEFAULT_VAL_COLUMN] > data[DEFAULT_PREDICTED_VALUE]).astype("int")
     data = data.drop(columns=["tmp"])
 
     if return_data:
         return data
 
-    return one_liner_metric(data)
+    return oneliner_metric(data)
 
 
 def df_params(data: pd.DataFrame = None) -> Dict[str, pyll.base.Apply]:
@@ -73,7 +73,7 @@ def df_params(data: pd.DataFrame = None) -> Dict[str, pyll.base.Apply]:
 
 
 def f(variable_params: dict, data: pd.DataFrame = None) -> Dict[str, Union[str, float]]:
-    errors = one_liner_train(data=data, **variable_params)
+    errors = oneliner_train(data=data, **variable_params)
     return {'loss': errors, 'status': STATUS_OK}
 
 
@@ -95,7 +95,7 @@ def calculate_oneliner(train_file: pd.DataFrame, **kwargs) -> Tuple[dict, Trials
 
 
 @task(
-    description="Calculates the mean and the 3 sigma band for the series.",
+    description="Calculates the oneliner values using the best params found.",
     tags=["index", "final"],
     version="1",
 )
@@ -106,17 +106,8 @@ def oneliner_method(train_file: pd.DataFrame, output_path: Path, plot_range: Tup
 
     result_best["running_time_in_seconds"] = (t_end - t_start).total_seconds()
 
-    result_df: pd.DataFrame = one_liner_train(train_file, return_data=True, **result_best)
-
     # Save results
-    save_as_json(result_best, output_path / "oneliner_result_best.json")
-    save_as_json(result_trials, output_path / "oneliner_result_trials.json")
-
-    result_df.to_parquet(output_path / "results_oneliner.parquet")
-
-    make_plot_lines_results(result_df[result_df.train_set == 1], output_path / "oneliner_train_set.png")
-    make_plot_lines_results(result_df[result_df.test_set == 1], output_path / "oneliner_test_set.png")
-    make_plot_lines_results(result_df[result_df.anomaly_set == 1], output_path / "oneliner_anomaly_set.png", plot_range)
-    make_plot_lines_results(result_df, output_path / "oneliner_full_set.png")
+    save_as_json(result_best, output_path / "oneliner_params.json")
+    save_as_json(result_trials.trials, output_path / "oneliner_trials.json")
 
     return True

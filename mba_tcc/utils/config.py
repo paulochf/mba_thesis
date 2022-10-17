@@ -3,6 +3,8 @@ from pathlib import Path
 
 
 DEFAULT_VAL_COLUMN: str = "vals"
+DEFAULT_PREDICTED_VALUE: str = "predicted_val"
+DEFAULT_PREDICTED_ANOMALY: str = "predicted_anomaly"
 
 
 def get_env_var_as_path(var_name: str) -> Path:
