@@ -17,6 +17,7 @@ numpy = "*"
 pandas = "*"
 prefect = "*"
 prefect-dask = "*"
+prts = "^1.0.0.3"
 pyarrow = "*"
 python-dotenv = {extras = ["cli"], version = "^0.21.0"}
 #darts = "^0.22.0"
