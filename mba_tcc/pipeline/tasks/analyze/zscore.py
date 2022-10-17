@@ -22,13 +22,21 @@ def sigma_analyze(dataset_path: Path, output_path: Path, condition: Callable, **
     result_df: pd.DataFrame = pd.read_parquet(dataset_path / f"zscore_predictions_{suffix}.parquet")
 
     alpha_params = [0.5, 1.0]
+    dataset_params = ["all", "test_set"]
+    params_space = product(alpha_params, dataset_params)
 
     metrics_list: list = list()
     alpha: float
-    for alpha in alpha_params:
-        print("alpha:", alpha)
-        metrics: dict = performance_metrics(result_df, alpha=alpha)
+    dataset: str
+    for alpha, dataset in params_space:
+        subset_df = result_df
+        if dataset != "all":
+            subset_df = subset_df[subset_df[dataset] == 1]
+
+        metrics: dict = performance_metrics(subset_df, alpha=alpha)
         metrics["condition"] = suffix
+        metrics["dataset"] = dataset
+        metrics["method"] = "sigma"
         metrics_list.append(metrics)
 
     final_metrics = kwargs
