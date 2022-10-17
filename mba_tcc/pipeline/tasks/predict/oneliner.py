@@ -1,13 +1,11 @@
 from json import load
 from pathlib import Path
-from typing import Tuple
 
 import pandas as pd
 
 from prefect import task
 
 from mba_tcc.pipeline.tasks.train.oneliner import oneliner_train
-from mba_tcc.utils.plotting import make_plot_lines_results
 
 
 @task(
@@ -15,7 +13,7 @@ from mba_tcc.utils.plotting import make_plot_lines_results
     tags=["index", "final"],
     version="1",
 )
-def oneliner_predict(train_file: pd.DataFrame, output_path: Path, plot_range: Tuple[int, int]) -> bool:
+def oneliner_predict(train_file: pd.DataFrame, output_path: Path) -> bool:
     result_df_path: Path = output_path / "oneliner_predictions.parquet"
     if result_df_path.exists(): return True
 
@@ -26,10 +24,5 @@ def oneliner_predict(train_file: pd.DataFrame, output_path: Path, plot_range: Tu
 
     # Save results
     result_df.to_parquet(result_df_path)
-
-    make_plot_lines_results(result_df[result_df.train_set == 1], output_path / "oneliner_train_set.png")
-    make_plot_lines_results(result_df[result_df.test_set == 1], output_path / "oneliner_test_set.png")
-    make_plot_lines_results(result_df[result_df.anomaly_set == 1], output_path / "oneliner_anomaly_set.png", plot_range)
-    make_plot_lines_results(result_df, output_path / "oneliner_full_set.png")
 
     return True

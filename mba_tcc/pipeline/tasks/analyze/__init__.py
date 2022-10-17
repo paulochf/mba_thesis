@@ -3,11 +3,11 @@ from typing import Union, Dict
 
 import ipdb
 import pandas as pd
+from prefect import get_run_logger
 
 from prts import ts_precision, ts_recall
 
-from mba_tcc.utils.config import DEFAULT_PREDICTED_ANOMALY, DEFAULT_PREDICTED_VALUE
-
+from mba_tcc.utils.config import DEFAULT_PREDICTED_ANOMALY
 
 precision_reciprocal = partial(ts_precision, cardinality="reciprocal")
 recall_reciprocal = partial(ts_recall, cardinality="reciprocal")
@@ -29,26 +29,30 @@ def performance_metrics(df: pd.DataFrame, alpha: float = 1.) -> Dict[str, Union[
 
     metrics_dict = {
         "alpha": alpha,
-        "total_count": len(df),
-    }
 
-    if df[DEFAULT_PREDICTED_VALUE].isnull().sum() == len(df):
-        return metrics_dict
-
-    return metrics_dict | {
         "total_anomalies": int(predicted_anomalies.sum()),
         "true_positives": int(((true_anomalies == 1) & (predicted_anomalies == 1)).sum()),
         "true_negatives": int(((true_anomalies == 0) & (predicted_anomalies == 0)).sum()),
         "false_positives": int(((true_anomalies == 0) & (predicted_anomalies == 1)).sum()),
         "false_negatives": int(((true_anomalies == 1) & (predicted_anomalies == 0)).sum()),
-
-        "precision_flat": float(precision_flat(true_anomalies, predicted_anomalies, alpha=alpha)),
-        "precision_front": float(precision_front(true_anomalies, predicted_anomalies, alpha=alpha)),
-        "precision_mid": float(precision_mid(true_anomalies, predicted_anomalies, alpha=alpha)),
-        "precision_back": float(precision_back(true_anomalies, predicted_anomalies, alpha=alpha)),
-
-        "recall_flat": float(precision_flat(true_anomalies, predicted_anomalies, alpha=alpha)),
-        "recall_front": float(precision_front(true_anomalies, predicted_anomalies, alpha=alpha)),
-        "recall_mid": float(precision_mid(true_anomalies, predicted_anomalies, alpha=alpha)),
-        "recall_back": float(precision_back(true_anomalies, predicted_anomalies, alpha=alpha)),
     }
+
+    try:
+        prts_dict = {
+            "precision_flat": float(precision_flat(true_anomalies, predicted_anomalies, alpha=alpha)),
+            "precision_front": float(precision_front(true_anomalies, predicted_anomalies, alpha=alpha)),
+            "precision_mid": float(precision_mid(true_anomalies, predicted_anomalies, alpha=alpha)),
+            "precision_back": float(precision_back(true_anomalies, predicted_anomalies, alpha=alpha)),
+
+            "recall_flat": float(precision_flat(true_anomalies, predicted_anomalies, alpha=alpha)),
+            "recall_front": float(precision_front(true_anomalies, predicted_anomalies, alpha=alpha)),
+            "recall_mid": float(precision_mid(true_anomalies, predicted_anomalies, alpha=alpha)),
+            "recall_back": float(precision_back(true_anomalies, predicted_anomalies, alpha=alpha)),
+        }
+
+        return metrics_dict | prts_dict
+    except:
+        logger = get_run_logger()
+        logger.warning("Data disallow prts usage. Skipping...")
+
+    return metrics_dict

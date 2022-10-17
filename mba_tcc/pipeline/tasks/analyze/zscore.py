@@ -1,25 +1,20 @@
 from itertools import product
+from json import load
 from pathlib import Path
-from typing import Callable
 
 import pandas as pd
 
 from prefect import task
 
+from mba_tcc.pipeline.tasks import NP_LOGSPACE_2
 from mba_tcc.pipeline.tasks.analyze import performance_metrics
+from mba_tcc.utils.plotting import make_plot_lines_results
 from mba_tcc.utils.transformation import save_as_json
 
 
-@task(
-    description="Measure the outlier values for the sigma predicted values.",
-    tags=["index", "final"],
-    version="1",
-)
-def sigma_analyze(dataset_path: Path, output_path: Path, condition: Callable, **kwargs) -> bool:
-    print(">>> sigma_analyze")
-    suffix: str = condition.__name__
-
-    result_df: pd.DataFrame = pd.read_parquet(dataset_path / f"zscore_predictions_{suffix}.parquet")
+def analyze(zscore_dataset_path: Path, zscore_output_path: Path, **params) -> None:
+    z_limit: int = params["z_limit"]
+    result_df: pd.DataFrame = pd.read_parquet(zscore_dataset_path / f"zscore_predictions_{z_limit}.parquet")
 
     alpha_params = [0.5, 1.0]
     dataset_params = ["all", "test_set"]
@@ -33,15 +28,31 @@ def sigma_analyze(dataset_path: Path, output_path: Path, condition: Callable, **
         if dataset != "all":
             subset_df = subset_df[subset_df[dataset] == 1]
 
+        results = load((zscore_dataset_path / f"zscore_params_{z_limit}.json").open())
+
         metrics: dict = performance_metrics(subset_df, alpha=alpha)
-        metrics["condition"] = suffix
         metrics["dataset"] = dataset
-        metrics["method"] = "sigma"
-        metrics_list.append(metrics)
+        metrics["method"] = "zscore"
+        metrics_list.append(results | metrics)
 
-    final_metrics = kwargs
-    final_metrics["metrics"] = metrics_list
+        make_plot_lines_results(result_df[result_df.train_set == 1], zscore_output_path / "zscore_train_set.png", **params)
+        make_plot_lines_results(result_df[result_df.test_set == 1], zscore_output_path / "zscore_test_set.png", **params)
+        make_plot_lines_results(result_df[result_df.anomaly_set == 1], zscore_output_path / "zscore_anomaly_set.png", anomaly=True, **params)
+        make_plot_lines_results(result_df, zscore_output_path / "zscore_full_set.png", **params)
 
-    save_as_json(final_metrics, output_path / f"sigma_metrics_{suffix}.json")
+    params["metrics"] = metrics_list
 
-    return True
+    save_as_json(params, zscore_output_path / f"zscore_metrics_{z_limit}.json")
+
+
+@task(
+    description="Measure the outlier values for the zscore predicted values.",
+    tags=["index", "final"],
+    version="1",
+)
+def zscore_analyze(dataset_path: Path, output_path: Path, **params):
+    zscore_dataset_path: Path = dataset_path / "zscore"
+    zscore_output_path: Path = output_path / "zscore"
+    zscore_output_path.mkdir(parents=True, exist_ok=True)
+
+    analyze(zscore_dataset_path, zscore_output_path, **params)

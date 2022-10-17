@@ -99,7 +99,10 @@ def calculate_oneliner(train_file: pd.DataFrame, **kwargs) -> Tuple[dict, Trials
     tags=["index", "final"],
     version="1",
 )
-def oneliner_method(train_file: pd.DataFrame, output_path: Path, plot_range: Tuple[int, int]) -> bool:
+def oneliner_method(train_file: pd.DataFrame, output_path: Path, **params) -> bool:
+    oneliner_output_path = output_path / "oneliner"
+    oneliner_output_path.mkdir(parents=True, exist_ok=True)
+
     t_start: datetime = datetime.now()
     result_best, result_trials = calculate_oneliner(train_file)
     t_end: datetime = datetime.now()
