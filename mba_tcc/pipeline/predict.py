@@ -22,10 +22,10 @@ def predict_flow():
 
     params: dict
     for params in index_records:
-        file_folder_path = get_dataset_folder(trained_assets_path, **params)
-
         # Load data file
         dataset_path: Path = get_dataset_folder(input_path, **params)
         train_file: pd.DataFrame = pd.read_parquet(dataset_path / "data.parquet")
+
+        file_folder_path = get_dataset_folder(trained_assets_path, **params)
 
         oneliner_predict(train_file, file_folder_path)

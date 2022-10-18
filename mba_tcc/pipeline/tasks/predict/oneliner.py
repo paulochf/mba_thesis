@@ -14,10 +14,10 @@ from mba_tcc.pipeline.tasks.train.oneliner import oneliner_train
     version="1",
 )
 def oneliner_predict(train_file: pd.DataFrame, output_path: Path) -> bool:
-    result_df_path: Path = output_path / "oneliner_predictions.parquet"
+    result_df_path: Path = output_path / "oneliner" / "predictions.parquet"
     if result_df_path.exists(): return True
 
-    result_best_path: Path = output_path / "oneliner_params.json"
+    result_best_path: Path = output_path / "oneliner" / "oneliner_params.json"
     result_best: dict = load(result_best_path.open())
 
     result_df: pd.DataFrame = oneliner_train(train_file, return_data=True, **result_best)

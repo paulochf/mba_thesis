@@ -7,14 +7,13 @@ import pandas as pd
 from pandas.core.window import Rolling
 from prefect import task
 
-from mba_tcc.utils.plotting import make_plot_lines_results
 from mba_tcc.utils.transformation import save_as_json
 
 from functools import partial
 
 from hyperopt import fmin, tpe, hp, STATUS_OK, Trials, pyll
 
-from mba_tcc.utils.config import DEFAULT_VAL_COLUMN, DEFAULT_PREDICTED_VALUE, DEFAULT_PREDICTED_ANOMALY
+from mba_tcc.utils.config import DEFAULT_VAL_COLUMN, DEFAULT_PREDICTED_VALUE, DEFAULT_PREDICTED_ANOMALY, TMP_VAL
 
 
 def oneliner_metric(data: pd.DataFrame = None) -> int:
@@ -29,21 +28,20 @@ def oneliner_train(data: pd.DataFrame = None, return_data: bool = False, **param
     f_abs: int = params["f_abs"]
     f_diff: int = params["f_diff"]
 
-    data["tmp"] = data[DEFAULT_VAL_COLUMN]
+    data[TMP_VAL] = data[DEFAULT_VAL_COLUMN]
 
     if f_diff:
-        data["tmp"] = data["tmp"].diff()
+        data[TMP_VAL] = data[TMP_VAL].diff()
 
     if f_abs:
-        data["tmp"] = data["tmp"].abs()
+        data[TMP_VAL] = data[TMP_VAL].abs()
 
-    df_rolling: Rolling = data["tmp"].rolling(window=k)
+    df_rolling: Rolling = data[TMP_VAL].rolling(window=k)
     df_rolling_mean: pd.Series = df_rolling.mean()
     df_rolling_std: pd.Series = df_rolling.std()
 
     data[DEFAULT_PREDICTED_VALUE] = (k != 1) * df_rolling_mean + c * df_rolling_std + b
-    data[DEFAULT_PREDICTED_ANOMALY] = (data[DEFAULT_VAL_COLUMN] > data[DEFAULT_PREDICTED_VALUE]).astype("int")
-    data = data.drop(columns=["tmp"])
+    data[DEFAULT_PREDICTED_ANOMALY] = (data[TMP_VAL] > data[DEFAULT_PREDICTED_VALUE]).astype("int")
 
     if return_data:
         return data
@@ -89,7 +87,7 @@ def calculate_oneliner(train_file: pd.DataFrame, **kwargs) -> Tuple[dict, Trials
 
     f, params = prepare_trial(train_file)
     trials_results: Trials = Trials()
-    best: dict = fmin(f, params, algo=tpe.suggest, max_evals=2500, trials=trials_results, **kwargs)
+    best: dict = fmin(f, params, algo=tpe.suggest, max_evals=1000, trials=trials_results, max_queue_len=10, **kwargs)
 
     return best, trials_results
 
@@ -110,7 +108,7 @@ def oneliner_method(train_file: pd.DataFrame, output_path: Path, **params) -> bo
     result_best["running_time_in_seconds"] = (t_end - t_start).total_seconds()
 
     # Save results
-    save_as_json(result_best, output_path / "oneliner_params.json")
-    save_as_json(result_trials.trials, output_path / "oneliner_trials.json")
+    save_as_json(result_best, oneliner_output_path / "oneliner_params.json")
+    save_as_json(result_trials.trials, oneliner_output_path / "oneliner_trials.json")
 
     return True

@@ -17,5 +17,5 @@ def main() -> Any:
 
     # etl_flow()
     train_flow()
-    # predict_flow()
+    predict_flow()
     analyze_flow()
