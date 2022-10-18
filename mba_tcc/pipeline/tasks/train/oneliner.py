@@ -87,7 +87,7 @@ def calculate_oneliner(train_file: pd.DataFrame, **kwargs) -> Tuple[dict, Trials
 
     f, params = prepare_trial(train_file)
     trials_results: Trials = Trials()
-    best: dict = fmin(f, params, algo=tpe.suggest, max_evals=1000, trials=trials_results, max_queue_len=10, **kwargs)
+    best: dict = fmin(f, params, algo=tpe.suggest, max_evals=1000, trials=trials_results, max_queue_len=20, **kwargs)
 
     return best, trials_results
 
