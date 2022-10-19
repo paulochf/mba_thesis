@@ -2,7 +2,6 @@ from itertools import product
 from json import load
 from pathlib import Path
 
-import ipdb
 import pandas as pd
 
 from prefect import task
@@ -13,7 +12,6 @@ from mba_tcc.utils.transformation import save_as_json
 
 
 def analyze(sigma_dataset_path: Path, sigma_output_path: Path, window_size: int, sigma: int, **params) -> None:
-    ipdb.set_trace()
     # params_file = sigma_output_path / f"sigma_metrics_{window_size}w_{sigma}s.json"
     # if params_file.exists():
     #     return
