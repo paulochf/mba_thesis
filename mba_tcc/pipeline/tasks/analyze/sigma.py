@@ -14,9 +14,9 @@ from mba_tcc.utils.transformation import save_as_json
 
 def analyze(sigma_dataset_path: Path, sigma_output_path: Path, window_size: int, sigma: int, **params) -> None:
     ipdb.set_trace()
-    params_file = sigma_output_path / f"sigma_metrics_{window_size}w_{sigma}s.json"
-    if params_file.exists():
-        return
+    # params_file = sigma_output_path / f"sigma_metrics_{window_size}w_{sigma}s.json"
+    # if params_file.exists():
+    #     return
 
     result_df: pd.DataFrame = pd.read_parquet(sigma_dataset_path / f"sigma_predictions_{window_size}w_{sigma}s.parquet")
     results = load((sigma_dataset_path / f"sigma_params_{window_size}w_{sigma}s.json").open())
