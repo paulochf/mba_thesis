@@ -13,8 +13,7 @@ from mba_tcc.utils.datasets import load_file_index
 from mba_tcc.utils.transformation import get_dataset_folder
 
 
-# @flow(task_runner=DaskTaskRunner())
-@flow
+@flow(task_runner=DaskTaskRunner())
 def analyze_flow():
     index_df = load_file_index()
 
