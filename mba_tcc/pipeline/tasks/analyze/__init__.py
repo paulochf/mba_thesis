@@ -1,7 +1,6 @@
 from functools import partial
 from typing import Union, Dict
 
-import ipdb
 import pandas as pd
 from prefect import get_run_logger
 
@@ -13,7 +12,7 @@ from mba_tcc.utils.config import DEFAULT_PREDICTED_ANOMALY
 DATASETS = [
     # "all",
     # "train_set",
-    # "test_set",
+    "test_set",
     "anomaly_set",
 ]
 
@@ -36,8 +35,6 @@ def performance_metrics(df: pd.DataFrame, alpha: float = 1.) -> Dict[str, Union[
     true_anomalies: pd.Series = df["anomaly_set"].values
     predicted_anomalies: pd.Series = df[DEFAULT_PREDICTED_ANOMALY].values
 
-    ipdb.set_trace()
-    
     metrics_dict = {
         "alpha": alpha,
 
