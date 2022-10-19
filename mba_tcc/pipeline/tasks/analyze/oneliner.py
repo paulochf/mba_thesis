@@ -6,7 +6,7 @@ import pandas as pd
 
 from prefect import task
 
-from mba_tcc.pipeline.tasks.analyze import performance_metrics
+from mba_tcc.pipeline.tasks.analyze import performance_metrics, DATASETS
 from mba_tcc.utils.plotting import make_plot_lines_results
 from mba_tcc.utils.transformation import save_as_json
 
@@ -15,8 +15,7 @@ def analyze(oneliner_dataset_path: Path, oneliner_output_path: Path, **params) -
     result_df: pd.DataFrame = pd.read_parquet(oneliner_dataset_path / f"oneliner_predictions.parquet")
 
     alpha_params = [0.5, 1.0]
-    dataset_params = ["all", "test_set"]
-    params_space = product(alpha_params, dataset_params)
+    params_space = product(alpha_params, DATASETS)
 
     metrics_list: list = list()
     alpha: float
@@ -33,10 +32,10 @@ def analyze(oneliner_dataset_path: Path, oneliner_output_path: Path, **params) -
         metrics["method"] = "oneliner"
         metrics_list.append(results | metrics)
 
-        make_plot_lines_results(result_df[result_df.train_set == 1], oneliner_output_path / "oneliner_train_set.png", **params)
-        make_plot_lines_results(result_df[result_df.test_set == 1], oneliner_output_path / "oneliner_test_set.png", **params)
-        make_plot_lines_results(result_df[result_df.anomaly_set == 1], oneliner_output_path / "oneliner_anomaly_set.png", anomaly=True, **params)
-        make_plot_lines_results(result_df, oneliner_output_path / "oneliner_full_set.png", **params)
+        # make_plot_lines_results(result_df[result_df.train_set == 1], oneliner_output_path / "oneliner_train_set.png", **params)
+        # make_plot_lines_results(result_df[result_df.test_set == 1], oneliner_output_path / "oneliner_test_set.png", **params)
+        # make_plot_lines_results(result_df[result_df.anomaly_set == 1], oneliner_output_path / "oneliner_anomaly_set.png", anomaly=True, **params)
+        # make_plot_lines_results(result_df, oneliner_output_path / "oneliner_full_set.png", **params)
 
     params["metrics"] = metrics_list
 

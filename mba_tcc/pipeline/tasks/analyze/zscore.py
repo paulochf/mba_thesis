@@ -7,7 +7,7 @@ import pandas as pd
 from prefect import task
 
 from mba_tcc.pipeline.tasks import NP_LOGSPACE_2
-from mba_tcc.pipeline.tasks.analyze import performance_metrics
+from mba_tcc.pipeline.tasks.analyze import performance_metrics, DATASETS
 from mba_tcc.utils.plotting import make_plot_lines_results
 from mba_tcc.utils.transformation import save_as_json
 
@@ -17,8 +17,7 @@ def analyze(zscore_dataset_path: Path, zscore_output_path: Path, **params) -> No
     result_df: pd.DataFrame = pd.read_parquet(zscore_dataset_path / f"zscore_predictions_{z_limit}.parquet")
 
     alpha_params = [0.5, 1.0]
-    dataset_params = ["all", "test_set"]
-    params_space = product(alpha_params, dataset_params)
+    params_space = product(alpha_params, DATASETS)
 
     metrics_list: list = list()
     alpha: float
@@ -35,10 +34,10 @@ def analyze(zscore_dataset_path: Path, zscore_output_path: Path, **params) -> No
         metrics["method"] = "zscore"
         metrics_list.append(results | metrics)
 
-        make_plot_lines_results(result_df[result_df.train_set == 1], zscore_output_path / "zscore_train_set.png", **params)
-        make_plot_lines_results(result_df[result_df.test_set == 1], zscore_output_path / "zscore_test_set.png", **params)
-        make_plot_lines_results(result_df[result_df.anomaly_set == 1], zscore_output_path / "zscore_anomaly_set.png", anomaly=True, **params)
-        make_plot_lines_results(result_df, zscore_output_path / "zscore_full_set.png", **params)
+        # make_plot_lines_results(result_df[result_df.train_set == 1], zscore_output_path / "zscore_train_set.png", **params)
+        # make_plot_lines_results(result_df[result_df.test_set == 1], zscore_output_path / "zscore_test_set.png", **params)
+        # make_plot_lines_results(result_df[result_df.anomaly_set == 1], zscore_output_path / "zscore_anomaly_set.png", anomaly=True, **params)
+        # make_plot_lines_results(result_df, zscore_output_path / "zscore_full_set.png", **params)
 
     params["metrics"] = metrics_list
 

@@ -1,13 +1,21 @@
 from functools import partial
 from typing import Union, Dict
 
-import ipdb
 import pandas as pd
 from prefect import get_run_logger
 
 from prts import ts_precision, ts_recall
 
 from mba_tcc.utils.config import DEFAULT_PREDICTED_ANOMALY
+
+
+DATASETS = [
+    # "all",
+    "train_set",
+    # "test_set",
+    "anomaly_set",
+]
+
 
 precision_reciprocal = partial(ts_precision, cardinality="reciprocal")
 recall_reciprocal = partial(ts_recall, cardinality="reciprocal")
