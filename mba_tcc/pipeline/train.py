@@ -1,12 +1,15 @@
+from itertools import product
 from pathlib import Path
-from typing import List, Tuple
+from typing import List
 
 import pandas as pd
 from prefect import flow
 from prefect_dask import DaskTaskRunner
 
+from mba_tcc.pipeline.tasks import NP_LOGSPACE_2, Z_VALUES
 from mba_tcc.pipeline.tasks.train.oneliner import oneliner_method
 from mba_tcc.pipeline.tasks.train.sigma import sigma_method
+from mba_tcc.pipeline.tasks.train.zscore import zscore_method
 from mba_tcc.utils.config import get_env_var_as_path
 from mba_tcc.utils.datasets import load_file_index
 from mba_tcc.utils.transformation import get_dataset_folder
@@ -25,9 +28,6 @@ def train_flow():
 
     params: dict
     for params in index_records:
-        anomaly_index_start: int = params["anomaly_index_start"]
-        anomaly_index_end: int = params["anomaly_index_end"]
-
         file_folder_path = get_dataset_folder(trained_assets_path, **params)
         file_folder_path.mkdir(parents=True, exist_ok=True)
 
@@ -35,12 +35,10 @@ def train_flow():
         dataset_path: Path = get_dataset_folder(input_path, **params)
         train_file: pd.DataFrame = pd.read_parquet(dataset_path / "data.parquet")
 
-        # # Determine the anomaly range for plotting
-        plot_range: Tuple[int, int] = (
-            int(anomaly_index_start * 0.99),
-            int(anomaly_index_end * 1.01)
-        )
+        for window_size, sigma in product(NP_LOGSPACE_2, Z_VALUES):
+            sigma_method(train_file, file_folder_path, window_size=int(window_size), sigma=sigma, **params)
 
-        sigma_method(train_file, file_folder_path, plot_range, params, all)
-        sigma_method(train_file, file_folder_path, plot_range, params, any)
-        oneliner_method(train_file, file_folder_path, plot_range)
+        for z_limit in Z_VALUES:
+            zscore_method(train_file, file_folder_path, z_limit=int(z_limit), **params)
+
+        oneliner_method(train_file, file_folder_path, **params)

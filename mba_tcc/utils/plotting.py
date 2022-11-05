@@ -1,7 +1,9 @@
 from pathlib import Path
 from typing import List, Tuple
 
+import ipdb
 import pandas as pd
+
 from matplotlib import pyplot as plt
 
 from mba_tcc.utils.config import DEFAULT_VAL_COLUMN
@@ -23,8 +25,17 @@ def make_plot_lines_raw(train_file: pd.DataFrame, export_path: Path, plot_range:
     plt.close()
 
 
-def make_plot_lines_results(df: pd.DataFrame, plot_name: Path, plot_range: Tuple[int, int] = None):
-    if plot_range is not None:
+def make_plot_lines_results(df: pd.DataFrame, plot_name: Path, anomaly: bool = False, **kwargs):
+    if anomaly:
+        anomaly_index_start = kwargs["anomaly_index_start"]
+        anomaly_index_end = kwargs["anomaly_index_end"]
+
+        # # Determine the anomaly range for plotting
+        plot_range = (
+            int(anomaly_index_start * 0.99),
+            int(anomaly_index_end * 1.01)
+        )
+
         df = df.loc[slice(*plot_range), :]
 
     secondary_y: List[str]

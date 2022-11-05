@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 
 
+TMP_VAL: str = "tmp_val"
 DEFAULT_VAL_COLUMN: str = "vals"
 DEFAULT_PREDICTED_VALUE: str = "predicted_val"
 DEFAULT_PREDICTED_ANOMALY: str = "predicted_anomaly"
