@@ -34,10 +34,10 @@ def analyze(zscore_dataset_path: Path, zscore_output_path: Path, **params) -> No
         metrics["method"] = "zscore"
         metrics_list.append(results | metrics)
 
-        # make_plot_lines_results(result_df[result_df.train_set == 1], zscore_output_path / "zscore_train_set.png", **params)
-        # make_plot_lines_results(result_df[result_df.test_set == 1], zscore_output_path / "zscore_test_set.png", **params)
-        # make_plot_lines_results(result_df[result_df.anomaly_set == 1], zscore_output_path / "zscore_anomaly_set.png", anomaly=True, **params)
-        # make_plot_lines_results(result_df, zscore_output_path / "zscore_full_set.png", **params)
+        make_plot_lines_results(result_df[result_df.train_set == 1], zscore_output_path / f"zscore_train_set_alpha_{alpha}_dataset_{dataset}.png", **params)
+        make_plot_lines_results(result_df[result_df.test_set == 1], zscore_output_path / f"zscore_test_set_alpha_{alpha}_dataset_{dataset}.png", **params)
+        make_plot_lines_results(result_df[result_df.anomaly_set == 1], zscore_output_path / f"zscore_anomaly_set_alpha_{alpha}_dataset_{dataset}.png", anomaly=True, **params)
+        make_plot_lines_results(result_df, zscore_output_path / f"zscore_full_set_alpha_{alpha}_dataset_{dataset}.png", **params)
 
     params["metrics"] = metrics_list
 

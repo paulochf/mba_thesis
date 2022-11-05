@@ -10,8 +10,8 @@ from mba_tcc.utils.config import DEFAULT_PREDICTED_ANOMALY
 
 
 DATASETS = [
-    # "all",
-    # "train_set",
+    "all",
+    "train_set",
     "test_set",
     "anomaly_set",
 ]

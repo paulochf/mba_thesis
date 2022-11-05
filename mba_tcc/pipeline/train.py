@@ -35,10 +35,10 @@ def train_flow():
         dataset_path: Path = get_dataset_folder(input_path, **params)
         train_file: pd.DataFrame = pd.read_parquet(dataset_path / "data.parquet")
 
-        # for window_size, sigma in product(NP_LOGSPACE_2, Z_VALUES):
-        #     sigma_method(train_file, file_folder_path, window_size=int(window_size), sigma=sigma, **params)
+        for window_size, sigma in product(NP_LOGSPACE_2, Z_VALUES):
+            sigma_method(train_file, file_folder_path, window_size=int(window_size), sigma=sigma, **params)
 
-        # for z_limit in Z_VALUES:
-        #     zscore_method(train_file, file_folder_path, z_limit=int(z_limit), **params)
+        for z_limit in Z_VALUES:
+            zscore_method(train_file, file_folder_path, z_limit=int(z_limit), **params)
 
         oneliner_method(train_file, file_folder_path, **params)
