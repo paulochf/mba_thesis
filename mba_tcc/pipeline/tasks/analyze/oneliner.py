@@ -12,7 +12,7 @@ from mba_tcc.utils.transformation import save_as_json
 
 
 def analyze(oneliner_dataset_path: Path, oneliner_output_path: Path, **params) -> None:
-    result_df: pd.DataFrame = pd.read_parquet(oneliner_dataset_path / f"oneliner_predictions.parquet")
+    result_df: pd.DataFrame = pd.read_parquet(oneliner_dataset_path / "predictions.parquet")
 
     alpha_params = [0.5, 1.0]
     params_space = product(alpha_params, DATASETS)
