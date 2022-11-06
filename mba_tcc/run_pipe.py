@@ -15,7 +15,7 @@ mpl.use("Agg")
 def main() -> Any:
     load_dotenv()
 
-    # etl_flow()
+    etl_flow()
     train_flow()
     predict_flow()
     analyze_flow()
