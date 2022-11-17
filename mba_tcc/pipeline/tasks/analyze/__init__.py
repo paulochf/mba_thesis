@@ -52,10 +52,10 @@ def performance_metrics(df: pd.DataFrame, alpha: float = 1.) -> Dict[str, Union[
             "precision_mid": float(precision_mid(true_anomalies, predicted_anomalies, alpha=alpha)),
             "precision_back": float(precision_back(true_anomalies, predicted_anomalies, alpha=alpha)),
 
-            "recall_flat": float(precision_flat(true_anomalies, predicted_anomalies, alpha=alpha)),
-            "recall_front": float(precision_front(true_anomalies, predicted_anomalies, alpha=alpha)),
-            "recall_mid": float(precision_mid(true_anomalies, predicted_anomalies, alpha=alpha)),
-            "recall_back": float(precision_back(true_anomalies, predicted_anomalies, alpha=alpha)),
+            "recall_flat": float(recall_flat(true_anomalies, predicted_anomalies, alpha=alpha)),
+            "recall_front": float(recall_front(true_anomalies, predicted_anomalies, alpha=alpha)),
+            "recall_mid": float(recall_mid(true_anomalies, predicted_anomalies, alpha=alpha)),
+            "recall_back": float(recall_back(true_anomalies, predicted_anomalies, alpha=alpha)),
         }
 
         return metrics_dict | prts_dict
