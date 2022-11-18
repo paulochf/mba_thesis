@@ -4,7 +4,7 @@ from typing import Union, Dict
 import pandas as pd
 from prefect import get_run_logger
 
-from prts import ts_precision, ts_recall
+from prts import ts_precision, ts_recall, ts_fscore
 
 from mba_tcc.utils.config import DEFAULT_PREDICTED_ANOMALY
 
@@ -19,6 +19,7 @@ DATASETS = [
 
 precision_reciprocal = partial(ts_precision, cardinality="reciprocal")
 recall_reciprocal = partial(ts_recall, cardinality="reciprocal")
+fscore_reciprocal = partial(ts_fscore, cardinality="reciprocal")
 
 precision_flat = partial(precision_reciprocal, bias="flat")
 precision_front = partial(precision_reciprocal, bias="front")
@@ -29,6 +30,11 @@ recall_flat = partial(recall_reciprocal, bias="flat")
 recall_front = partial(recall_reciprocal, bias="front")
 recall_mid = partial(recall_reciprocal, bias="middle")
 recall_back = partial(recall_reciprocal, bias="back")
+
+fscore_flat = partial(fscore_reciprocal, bias="flat")
+fscore_front = partial(fscore_reciprocal, bias="front")
+fscore_mid = partial(fscore_reciprocal, bias="middle")
+fscore_back = partial(fscore_reciprocal, bias="back")
 
 
 def performance_metrics(df: pd.DataFrame, alpha: float = 1.) -> Dict[str, Union[int, float]]:
@@ -56,6 +62,11 @@ def performance_metrics(df: pd.DataFrame, alpha: float = 1.) -> Dict[str, Union[
             "recall_front": float(recall_front(true_anomalies, predicted_anomalies, alpha=alpha)),
             "recall_mid": float(recall_mid(true_anomalies, predicted_anomalies, alpha=alpha)),
             "recall_back": float(recall_back(true_anomalies, predicted_anomalies, alpha=alpha)),
+
+            "fscore_flat": float(fscore_flat(true_anomalies, predicted_anomalies, alpha=alpha)),
+            "fscore_front": float(fscore_front(true_anomalies, predicted_anomalies, alpha=alpha)),
+            "fscore_mid": float(fscore_mid(true_anomalies, predicted_anomalies, alpha=alpha)),
+            "fscore_back": float(fscore_back(true_anomalies, predicted_anomalies, alpha=alpha)),
         }
 
         return metrics_dict | prts_dict
