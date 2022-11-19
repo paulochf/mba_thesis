@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from prefect import task
+from prefect import get_run_logger, task
 
 from mba_tcc.pipeline.tasks.analyze import performance_metrics, DATASETS
 from mba_tcc.utils.plotting import make_plot_lines_results
