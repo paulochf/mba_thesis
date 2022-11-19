@@ -72,7 +72,7 @@ def performance_metrics(df: pd.DataFrame, alpha: float = 1.) -> Dict[str, Union[
         }
     except:
         logger = get_run_logger()
-        logger.warning("Data disallow prts precision. Skipping...")
+        logger.warning("Data disallow prts recall. Skipping...")
 
     try:
         prts_dict_f1 = {
@@ -83,6 +83,6 @@ def performance_metrics(df: pd.DataFrame, alpha: float = 1.) -> Dict[str, Union[
         }
     except:
         logger = get_run_logger()
-        logger.warning("Data disallow prts precision. Skipping...")
+        logger.warning("Data disallow prts fscore. Skipping...")
 
     return metrics_dict | prts_dict_precision | prts_dict_recall | prts_dict_f1
