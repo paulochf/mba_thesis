@@ -2,6 +2,7 @@ from itertools import product
 from json import load
 from pathlib import Path
 
+
 import pandas as pd
 
 from prefect import task
@@ -9,6 +10,9 @@ from prefect import task
 from mba_tcc.pipeline.tasks.analyze import performance_metrics, DATASETS
 from mba_tcc.utils.plotting import make_plot_lines_results
 from mba_tcc.utils.transformation import save_as_json
+
+
+logger = get_run_logger()
 
 
 def analyze(oneliner_dataset_path: Path, oneliner_output_path: Path, **params) -> None:
@@ -28,7 +32,7 @@ def analyze(oneliner_dataset_path: Path, oneliner_output_path: Path, **params) -
 
         results = load((oneliner_dataset_path / "oneliner_params.json").open())
 
-        metrics: dict = performance_metrics(subset_df, alpha=alpha)
+        metrics: dict = performance_metrics(subset_df, alpha=alpha, logger=logger)
         metrics["dataset"] = dataset
         metrics["method"] = "oneliner"
         metrics_list.append(results | metrics)

@@ -12,6 +12,9 @@ from mba_tcc.utils.plotting import make_plot_lines_results
 from mba_tcc.utils.transformation import save_as_json
 
 
+logger = get_run_logger()
+
+
 def analyze(zscore_dataset_path: Path, zscore_output_path: Path, **params) -> None:
     logger.info(f"Analyze [zscore] :: {zscore_dataset_path}")
     z_limit: int = params["z_limit"]
@@ -30,7 +33,7 @@ def analyze(zscore_dataset_path: Path, zscore_output_path: Path, **params) -> No
 
         results = load((zscore_dataset_path / f"zscore_params_{z_limit}.json").open())
 
-        metrics: dict = performance_metrics(subset_df, alpha=alpha)
+        metrics: dict = performance_metrics(subset_df, alpha=alpha, logger=logger)
         metrics["dataset"] = dataset
         metrics["method"] = "zscore"
         metrics_list.append(results | metrics)

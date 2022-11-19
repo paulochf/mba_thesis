@@ -1,8 +1,8 @@
 from functools import partial
+from logging import Logger
 from typing import Union, Dict
 
 import pandas as pd
-from prefect import get_run_logger
 
 from prts import ts_precision, ts_recall, ts_fscore
 
@@ -36,10 +36,8 @@ fscore_front = partial(fscore_reciprocal, bias="front")
 fscore_mid = partial(fscore_reciprocal, bias="middle")
 fscore_back = partial(fscore_reciprocal, bias="back")
 
-logger = get_run_logger()
 
-
-def performance_metrics(df: pd.DataFrame, alpha: float = 1.) -> Dict[str, Union[int, float]]:
+def performance_metrics(df: pd.DataFrame, alpha: float = 1., logger: Logger = None) -> Dict[str, Union[int, float]]:
     true_anomalies: pd.Series = df["anomaly_set"].values
     predicted_anomalies: pd.Series = df[DEFAULT_PREDICTED_ANOMALY].values
 
@@ -62,7 +60,8 @@ def performance_metrics(df: pd.DataFrame, alpha: float = 1.) -> Dict[str, Union[
             "precision_back": float(precision_back(true_anomalies, predicted_anomalies, alpha=alpha)),
         }
     except:
-        logger.warning("Data disallow prts precision. Skipping...")
+        if logger:
+            logger.warning("Data disallow prts precision. Skipping...")
     
     try:
         prts_dict_recall = {
@@ -72,7 +71,8 @@ def performance_metrics(df: pd.DataFrame, alpha: float = 1.) -> Dict[str, Union[
             "recall_back": float(recall_back(true_anomalies, predicted_anomalies, alpha=alpha)),
         }
     except:
-        logger.warning("Data disallow prts recall. Skipping...")
+        if logger:
+            logger.warning("Data disallow prts recall. Skipping...")
 
     try:
         prts_dict_f1 = {
@@ -82,6 +82,7 @@ def performance_metrics(df: pd.DataFrame, alpha: float = 1.) -> Dict[str, Union[
             "fscore_back": float(fscore_back(true_anomalies, predicted_anomalies, alpha=alpha)),
         }
     except:
-        logger.warning("Data disallow prts fscore. Skipping...")
+        if logger:
+            logger.warning("Data disallow prts fscore. Skipping...")
 
     return metrics_dict | prts_dict_precision | prts_dict_recall | prts_dict_f1
