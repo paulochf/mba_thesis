@@ -12,10 +12,8 @@ from mba_tcc.utils.plotting import make_plot_lines_results
 from mba_tcc.utils.transformation import save_as_json
 
 
-logger = get_run_logger()
-
-
 def analyze(zscore_dataset_path: Path, zscore_output_path: Path, **params) -> None:
+    logger = get_run_logger()
     logger.info(f"Analyze [zscore] :: {zscore_dataset_path}")
     z_limit: int = params["z_limit"]
     result_df: pd.DataFrame = pd.read_parquet(zscore_dataset_path / f"zscore_predictions_{z_limit}.parquet")
