@@ -51,27 +51,38 @@ def performance_metrics(df: pd.DataFrame, alpha: float = 1.) -> Dict[str, Union[
         "false_negatives": int(((true_anomalies == 1) & (predicted_anomalies == 0)).sum()),
     }
 
+    prts_dict_precision = prts_dict_recall = prts_dict_f1 = dict()
     try:
-        prts_dict = {
+        prts_dict_precision = {
             "precision_flat": float(precision_flat(true_anomalies, predicted_anomalies, alpha=alpha)),
             "precision_front": float(precision_front(true_anomalies, predicted_anomalies, alpha=alpha)),
             "precision_mid": float(precision_mid(true_anomalies, predicted_anomalies, alpha=alpha)),
             "precision_back": float(precision_back(true_anomalies, predicted_anomalies, alpha=alpha)),
-
+        }
+    except:
+        logger = get_run_logger()
+        logger.warning("Data disallow prts precision. Skipping...")
+    
+    try:
+        prts_dict_recall = {
             "recall_flat": float(recall_flat(true_anomalies, predicted_anomalies, alpha=alpha)),
             "recall_front": float(recall_front(true_anomalies, predicted_anomalies, alpha=alpha)),
             "recall_mid": float(recall_mid(true_anomalies, predicted_anomalies, alpha=alpha)),
             "recall_back": float(recall_back(true_anomalies, predicted_anomalies, alpha=alpha)),
+        }
+    except:
+        logger = get_run_logger()
+        logger.warning("Data disallow prts precision. Skipping...")
 
+    try:
+        prts_dict_f1 = {
             "fscore_flat": float(fscore_flat(true_anomalies, predicted_anomalies, alpha=alpha)),
             "fscore_front": float(fscore_front(true_anomalies, predicted_anomalies, alpha=alpha)),
             "fscore_mid": float(fscore_mid(true_anomalies, predicted_anomalies, alpha=alpha)),
             "fscore_back": float(fscore_back(true_anomalies, predicted_anomalies, alpha=alpha)),
         }
-
-        return metrics_dict | prts_dict
     except:
         logger = get_run_logger()
-        logger.warning("Data disallow prts usage. Skipping...")
+        logger.warning("Data disallow prts precision. Skipping...")
 
-    return metrics_dict
+    return metrics_dict | prts_dict_precision | prts_dict_recall | prts_dict_f1
