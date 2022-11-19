@@ -11,7 +11,11 @@ from mba_tcc.utils.plotting import make_plot_lines_results
 from mba_tcc.utils.transformation import save_as_json
 
 
+logger = get_run_logger()
+
+
 def analyze(oneliner_dataset_path: Path, oneliner_output_path: Path, **params) -> None:
+    logger.info(f"Analyze [oneliner] :: {oneliner_dataset_path}")
     result_df: pd.DataFrame = pd.read_parquet(oneliner_dataset_path / "predictions.parquet")
 
     alpha_params = [0.5, 1.0]
